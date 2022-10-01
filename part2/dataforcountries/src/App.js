@@ -124,17 +124,11 @@ const Display = (props) => {
   }
 }
 
-
-
-
-
 const Weather = (props) => {
-
 
   const [temp,setTemp] = useState(0)
   const [wind,setWind] = useState(0)
   const [icon,setIcon] = useState("")
-  
   const {country} = props
 
   useEffect(() => {
