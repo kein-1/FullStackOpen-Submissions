@@ -1,0 +1,16 @@
+GET http://localhost:3001/api/persons
+
+###
+
+DELETE http://localhost:3001/api/persons/1
+
+###
+
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{   
+    "id": 0,
+    "name": "Bobby Fisher",
+    "number": 123454566
+}
