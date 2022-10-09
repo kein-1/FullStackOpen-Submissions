@@ -8,9 +8,9 @@ DELETE http://localhost:3001/api/persons/1
 
 POST http://localhost:3001/api/persons
 content-type: application/json
-
+//This is the "body" of the content we will send 
 {   
     "id": 0,
-    "name": "Bobby Fisher",
+    "name": "Bobbd33y Fee3i223322rrrher",
     "number": 123454566
 }
