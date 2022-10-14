@@ -6,8 +6,6 @@ import { getAll, createPerson, deletePerson, changeNumber } from './services/pho
 const Person = (props) => {
   const {name,number,id,del} = props
 
-  console.log(del)
-  console.log(typeof(del))
   return (
     
     <li>{name} {number} 
@@ -26,8 +24,6 @@ const DisplayPeople = props => {
   const deleteFunction = (name, id) => {
     deletePerson(name,id).then
     (response => {
-      console.log(response)
-      console.log(typeof(response))
       getAll().then( response => setPersons(response.data))
     }).catch( response => {
       setErrorMessage("ERROR PERSON WAS ALREADY GONE")
@@ -151,9 +147,8 @@ const App = () => {
       if (window.confirm(`${newName} already exists in your phonebook! Replace old number with new one?`)){
 
         const person = persons.find(element => element.name === newName)
-        const personID = person.id
+        const personID = person._id
         const newPerson = {...person, number: newNumber}
-        
         
         changeNumber(newPerson,personID).then(response => {
           console.log("this is the response", response) 
@@ -164,7 +159,7 @@ const App = () => {
           // otherwise, we just copy over the same element 
           // this is important since remember in React, we must never directly update the state. We should make a 
           // new array and set that to our current state. the 'map' method makes a new array 
-          setPersons(persons.map(element => element.id === newPerson.id ? response.data : element))
+          setPersons(persons.map(element => element.id === newPerson._id ? response.data : element))
           setNewName("")
           setNewNumber(0)
           setAddedMessage(`Added ${newPerson.name}`)
@@ -179,14 +174,19 @@ const App = () => {
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
       }
       const newPersonsArr = persons.concat(newPerson)
       setPersons(newPersonsArr)
-      
+      console.log(newPerson)
       createPerson(newPerson).then(response=>{
-        console.log(response.data)
-      })
+        console.log("THIS IS RESPONSE" + response)
+        // console.log(response.data)
+      }).catch(error => {
+        console.log("ERROR IN HERE")
+        console.log(error)
+        console.log(error.response.data.error)
+      }
+      )
 
       setNewName("")
       setNewNumber(0)
@@ -202,7 +202,7 @@ const App = () => {
 
   console.log("I am rendered again!")
   return (
-    <div>
+    <div className='main-cont'>
       <h2>Phonebook</h2>
       <AddMessage addMessage = {addedMessage} />
       <p>{errorMessage}</p>

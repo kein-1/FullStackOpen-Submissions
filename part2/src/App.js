@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     console.log('effect')
     axios
-      .get('http://localhost:3001/notes')
+      .get('http://localhost:3001/api/notes')
       .then(response => {
         console.log('promise fulfilled')
         setNotes(response.data)
@@ -38,7 +38,7 @@ const App = () => {
       important: Math.random() < 0.5,
     }
     axios
-    .post('http://localhost:3001/notes', noteObject)
+    .post('http://localhost:3001/api/notes', noteObject)
     .then(response => {
       setNotes(notes.concat(response.data))
       setnewNote("")
