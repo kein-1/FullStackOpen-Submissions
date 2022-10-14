@@ -104,10 +104,9 @@ app.post('/api/persons', (request,response,next) => {
 
 			const new_entry = new Person({
 				name: body.name,
-				number: Number(body.number)
+				number: numb
 			})
 			await new_entry.save()
-			console.log(`added ${new_entry.name} number ${new_entry.number} to phonebook `)
 			response.json(new_entry)
 		}
 		catch(error){
