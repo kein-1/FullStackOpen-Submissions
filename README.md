@@ -11,8 +11,8 @@ Utilizes NPM packages : Json Server, Morgan, and Cors for back-end development/l
 Part 3: Basically setup a full-stack app in phonebook. Utilized React, Node.js, Express, and MongoDB. Built routes/paths with Express. Built database schemas and models with Mongoose in MongoDB.  
 
 Utilized the following packages:  
--dotenv - used to save environment variables (port, database url, api keys etc)
--morgan - for logging backend requests
--mongoose - a better way to use MongoDB 
--cors - used for connecting front-end and back-end since they are in separate ports
--nodemon - used so we do not have to manually restart server each time 
+-dotenv - used to save environment variables (port, database url, api keys etc)  
+-morgan - for logging backend requests  
+-mongoose - a better way to use MongoDB   
+-cors - used for connecting front-end and back-end since they are in separate ports  
+-nodemon - used so we do not have to manually restart server each time   
