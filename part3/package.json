@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "devWatch": "nodemon index.js"
+    "devWatch": "nodemon index.js",
+    "gitAdd": "git add . && git commit -m 'Updated part3' && git push"
+
   },
   "keywords": [],
   "author": "",
