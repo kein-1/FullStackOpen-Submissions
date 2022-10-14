@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "devWatch": "nodemon index.js",
     "gitAdd": "git add . && git commit -m 'Updated phonebook' && git push"
@@ -13,7 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "mongoose": "^6.6.5"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

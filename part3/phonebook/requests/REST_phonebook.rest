@@ -1,16 +1,36 @@
+rest-client.previewResponseInUntitledDocument = true
+
 GET http://localhost:3001/api/persons
 
 ###
-
-DELETE http://localhost:3001/api/persons/1
+GET https://phonebook3.fly.dev/api/persons
 
 ###
 
-POST http://localhost:3001/api/persons
+DELETE http://localhost:3001/api/persons/"Kendrick Lamar"
+
+###
+
+POST http://localhost:3001/api/persons HTTP/1.1
 content-type: application/json
-//This is the "body" of the content we will send 
+
+//This is the "body" of the content we will send
 {   
-    "id": 0,
-    "name": "Bobbd33y Fee3i223322rrrher",
+    "name": "Sir James",
     "number": 123454566
 }
+
+###
+POST https://phonebook3.fly.dev/api/persons
+content-type: application/json
+//This is the "body" of the content we will send 
+
+{   
+    "id": 0,
+    "name": "Snake",
+    "number": 123454566
+}
+
+###
+
+DELETE https://phonebook3.fly.dev/api/persons/2
