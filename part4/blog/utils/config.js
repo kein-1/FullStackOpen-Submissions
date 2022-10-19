@@ -7,6 +7,7 @@ const SECRET = "randomstring";
 const adding = "random str";
 const adding2 = "random str";
 const adding3 = "random str";
+const adding4 = "random str";
 
 module.exports = {
   PORT,
