@@ -9,5 +9,5 @@ To merge from a remote branch:
 
 # Incorporate main branch changes to a local branch:
 -Say our main branch made changes and then we want to add these changes to our branch brach1
--git checkout branch1 (this puts us in branch1)
+-git checkout branch1 (this puts us in branch1)  
 -git merge origin/main
