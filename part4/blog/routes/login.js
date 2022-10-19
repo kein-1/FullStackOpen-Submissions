@@ -16,12 +16,12 @@ loginRouter.post("/", async (request, response) => {
   const person = await User.find({ username: username });
 
   //Compare the password that was passed with the hashed password using bcrypt since the actual passwords are not stored in the database
-  const passwordCorrect = person.length === 0 ? false : await bcrypt.compare(
-    password,
-    person[0].passwordHash
-  );
+  const passwordCorrect =
+    person.length === 0
+      ? false
+      : await bcrypt.compare(password, person[0].passwordHash);
 
-  if (!(passwordCorrect) && person.length === 0)
+  if (!passwordCorrect && person.length === 0)
     return response.status(401).send("Wrong User name & Password!");
 
   const userForToken = {
@@ -29,6 +29,8 @@ loginRouter.post("/", async (request, response) => {
     id: person[0]._id,
   };
 
+  //What this does is add the "payload" as the first parameter and second parameter is the secret key
+  //This is how this is all signed
   const token = jsonwebtoken.sign(userForToken, process.env.SECRET);
 
   response
