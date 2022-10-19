@@ -15,16 +15,14 @@ loginRouter.post("/", async (request, response) => {
   //Find returns an array. Probably better to use findOne
   const person = await User.find({ username: username });
 
-  if (person === undefined || person.length == 0)
-    return response.status(401).send("User not found!");
-
   //Compare the password that was passed with the hashed password using bcrypt since the actual passwords are not stored in the database
-  const passwordCorrect = await bcrypt.compare(
+  const passwordCorrect = person.length === 0 ? false : await bcrypt.compare(
     password,
     person[0].passwordHash
   );
 
-  if (!passwordCorrect) return response.status(401).send("Wrong password!");
+  if (!(passwordCorrect) && person.length === 0)
+    return response.status(401).send("Wrong User name & Password!");
 
   const userForToken = {
     username: person[0].username,
