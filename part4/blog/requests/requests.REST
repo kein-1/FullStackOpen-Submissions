@@ -1,0 +1,42 @@
+GET http://localhost:3001/api/users
+
+
+###
+GET http://localhost:3001/api/login
+
+
+
+
+
+####
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "url": "testblog2",
+    "title": "My second blog!",
+    "author": "author!",
+    "likes": 1,
+    "user_id": "634f5483844e2745a15762e1"
+}
+
+
+####
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+    "username" : "kein",
+    "name": "keintest",
+    "password": "kein123"
+}
+
+###
+ 
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+    "username": "kein",
+    "password": "kein123"
+}
