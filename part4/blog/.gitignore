@@ -1,3 +1,7 @@
 # dependencies
 /node_modules
 .env
+
+
+# Useful git: 
+# https://stackoverflow.com/questions/21651185/git-merge-a-remote-branch-locally
