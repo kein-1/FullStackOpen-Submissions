@@ -4,6 +4,8 @@ const blogRouter = express.Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const jsonwebtoken = require("jsonwebtoken");
+
 //Then we define the rest of our routes here. Good thing about router is we can cut off a lot of the base routes. So since we know our main route is say http://localhost:3001/api/blogs, we can make this the base url in the main file (see comment in export below) and then use the subsequent routes here
 
 /*
@@ -55,10 +57,13 @@ const getTokenFrom = (request) => {
 };
 
 blogRouter.post("/", async (request, response) => {
-  const token = getTokenFrom(request);
-  console.log(token);
-  return;
   const content = request.body;
+  const token = getTokenFrom(request);
+
+  const verifiedToken = jsonwebtoken.verify(token, process.env.SECRET);
+  if (!verifiedToken.id)
+    return response.status(401).json({ error: "missing id" });
+  
   const creator = await User.findById(content.user_id);
   console.log(creator.blogs);
   console.log(creator._id);
