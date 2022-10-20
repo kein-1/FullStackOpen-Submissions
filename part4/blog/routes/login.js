@@ -8,6 +8,8 @@ const jsonwebtoken = require("jsonwebtoken");
 const { SECRET } = require("../utils/config");
 
 //checking
+//checking
+//checking
 
 //Check if the user is in the system. If so, we check if the password entered
 //is correct
