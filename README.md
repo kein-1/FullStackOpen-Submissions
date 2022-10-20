@@ -7,7 +7,7 @@ The course focuses on modern web development technology stacks.
 
 ###### Part 2: Server side. Utilizes forms, controlled components, useEffect. Build a full-stack app using React, Express, Node, and MongoDB. Also utilizes Postman/VS Code Rest Client to test backend functionality.  
 
-### Part 3: Basically setup a full-stack app in phonebook. Utilized React, Node.js, Express, and MongoDB. Built routes/paths with Express. Built database schemas and models with Mongoose in MongoDB.  
+#### Part 3: Basically setup a full-stack app in phonebook. Utilized React, Node.js, Express, and MongoDB. Built routes/paths with Express. Built database schemas and models with Mongoose in MongoDB.  
 Utilized the following packages:  
 - dotenv - used to save environment variables (port, database url, api keys etc)   
 - morgan - for logging backend requests   
