@@ -37,17 +37,16 @@ const getTokenFrom = (request) => {
   //If we do request.get("body"), it won't work!
   //We can do request.headers to see all available headers
 
-  //These two methods are the same to get the value of the "authorization" header
+  //These three methods are the same to get the value of the "authorization" header
   // console.log(request.headers["authorization"]);
+  // console.log(request.headers.authorization);
   // console.log(request.get("authorization"));
   // We can also get stuff like host name through request.get("host") or request.get("User-Agent")
   //but NOT request.get("body") to see contents since body is not a header
-
+  console.log(request.headers.authorization);
   const authorization = request.get("Authorization");
 
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-    console.log(authorization);
-
     //Since authorization is a string, it consists of "bearer <tokenname>".
     //Doing substring(7) means we return the substring starting from index 7, which makes sense
     //since this returns the token itself and removes the bearer and space from the string
@@ -58,12 +57,15 @@ const getTokenFrom = (request) => {
 
 blogRouter.post("/", async (request, response) => {
   const content = request.body;
+
+  //We can pass the token from the client to the server by passing it as an "Authorizaton" header
   const token = getTokenFrom(request);
 
+  return;
   const verifiedToken = jsonwebtoken.verify(token, process.env.SECRET);
   if (!verifiedToken.id)
     return response.status(401).json({ error: "missing id" });
-  
+
   const creator = await User.findById(content.user_id);
   console.log(creator.blogs);
   console.log(creator._id);
