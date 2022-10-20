@@ -7,6 +7,8 @@ const jsonwebtoken = require("jsonwebtoken");
 
 const { SECRET } = require("../utils/config");
 
+//checking
+
 //Check if the user is in the system. If so, we check if the password entered
 //is correct
 loginRouter.post("/", async (request, response) => {
