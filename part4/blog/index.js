@@ -11,6 +11,8 @@ const blogRouter = require("./routes/blog");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 const errorHandler = require("./utils/errors");
+const tokenExtractor = require('./utils/tokenExtractor')
+
 
 mongoose.connect(MONGODB_URL, () => console.log("CONNECTED"));
 
@@ -20,6 +22,7 @@ app.set("json spaces", 2);
 app.use(express.json());
 app.use(express.static("build"));
 app.use(cors());
+app.use(tokenExtractor)
 
 //Saying anything that starts with /api/blogs will use the router stuff we imported and basically add all those different routes to the end of this type of route
 app.use("/api/blogs", blogRouter);

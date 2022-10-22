@@ -25,12 +25,13 @@ loginRouter.post("/", async (request, response) => {
   const userForToken = {
     username: person[0].username,
     id: person[0]._id,
+    dateMade : new Date().toLocaleString()
   };
 
   //What this does is add the "payload" as the first parameter and second parameter is the secret key
   //This is how this is all signed
   const token = jsonwebtoken.sign(userForToken, process.env.SECRET);
-
+  console.log(token)
   response
     .status(220)
     .json({ token, username: person[0].username, name: person[0].name });

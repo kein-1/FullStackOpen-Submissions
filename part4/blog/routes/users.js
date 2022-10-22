@@ -9,8 +9,8 @@ const mongoose = require('mongoose')
 
 usersRouter.get('/', async (request,response) => {
 
-    const all_notes = await User.find({}).populate("blogs")
-    // const all_notes = await User.find({})
+    // const all_notes = await User.find({}).populate("blogs")
+    const all_notes = await User.find({})
 
 	console.log(all_notes)
     response.json(all_notes)

@@ -11,12 +11,13 @@ GET http://localhost:3001/api/login
 ####
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlaW4iLCJpZCI6IjYzNGY1NDgzODQ0ZTI3NDVhMTU3NjJlMSIsImRhdGVNYWRlIjoiMTAvMjIvMjAyMiwgNjoyNzo0NiBQTSIsImlhdCI6MTY2NjQ3NzY2Nn0.hyOsM8-tSdXLY-ur5gPYCm4SDImnlP1AINGohkBYQ0M
 
 {
-    "url": "testblog2",
-    "title": "My second blog!",
+    "url": "blog two",
+    "title": "My second blog",
     "author": "author!",
-    "likes": 1,
+    "likes": 2,
     "user_id": "634f5483844e2745a15762e1"
 }
 
@@ -40,3 +41,13 @@ content-type: application/json
     "username": "kein",
     "password": "kein123"
 }
+
+###
+DELETE http://localhost:3001/api/blogs/63546eac61d7017aad0c6480
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlaW4iLCJpZCI6IjYzNGY1NDgzODQ0ZTI3NDVhMTU3NjJlMSIsImRhdGVNYWRlIjoiMTAvMjIvMjAyMiwgNjoyNzo0NiBQTSIsImlhdCI6MTY2NjQ3NzY2Nn0.hyOsM8-tSdXLY-ur5gPYCm4SDImnlP1AINGohkBYQ0M
+
+###
+DELETE http://localhost:3001/api/blogs/634e0528b94d2805c6f6b58c
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlaW4iLCJpZCI6IjYzNGY1NDgzODQ0ZTI3NDVhMTU3NjJlMSIsImRhdGVNYWRlIjoiMTAvMjIvMjAyMiwgNTo0NjoxOSBQTSIsImlhdCI6MTY2NjQ3NTE3OX0.TsAjkePaHG2_9uysOrcrI9NsAXpRtjYmOakWk8j1770

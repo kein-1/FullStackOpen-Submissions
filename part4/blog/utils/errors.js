@@ -31,6 +31,7 @@ const errorHandler = (error, request, response, next) => {
   
   //This is to catch JWT authorization errors 
   if (error.name === "JsonWebTokenError") {
+    console.log(error);
     return response.status(400).json({ error: error.message });
   }
 

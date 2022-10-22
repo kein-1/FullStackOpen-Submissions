@@ -30,45 +30,22 @@ blogRouter.get("/:id", async (request, response) => {
   response.json(ans);
 });
 
-//Get the token from client to server
-const getTokenFrom = (request) => {
-  //request has a headers property. This is like when we want to access the contents
-  //of a POST request, we do request.body. However, "body" is NOT a header.
-  //If we do request.get("body"), it won't work!
-  //We can do request.headers to see all available headers
+//Get the token from client to server. This was extracted to a middleware called tokenExtractor.js
 
-  //These three methods are the same to get the value of the "authorization" header
-  // console.log(request.headers["authorization"]);
-  // console.log(request.headers.authorization);
-  // console.log(request.get("authorization"));
-  // We can also get stuff like host name through request.get("host") or request.get("User-Agent")
-  //but NOT request.get("body") to see contents since body is not a header
-  console.log(request.headers.authorization);
-  const authorization = request.get("Authorization");
-
-  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-    //Since authorization is a string, it consists of "bearer <tokenname>".
-    //Doing substring(7) means we return the substring starting from index 7, which makes sense
-    //since this returns the token itself and removes the bearer and space from the string
-    return authorization.substring(7);
-  }
-  return null;
-};
 
 blogRouter.post("/", async (request, response) => {
   const content = request.body;
 
-  //We can pass the token from the client to the server by passing it as an "Authorizaton" header
-  const token = getTokenFrom(request);
-
-  return;
+  //We passed the handling to a middleware function. The function added the "token" property to the request object 
+  const token = request.token
   const verifiedToken = jsonwebtoken.verify(token, process.env.SECRET);
+
+  console.log(verifiedToken)
   if (!verifiedToken.id)
     return response.status(401).json({ error: "missing id" });
 
   const creator = await User.findById(content.user_id);
-  console.log(creator.blogs);
-  console.log(creator._id);
+
   if (content.title && content.author) {
     const blog_post = new Blog({
       title: content.title,
@@ -93,12 +70,37 @@ blogRouter.post("/", async (request, response) => {
 });
 
 blogRouter.delete("/:id", async (request, response) => {
-  const id = request.params.id;
+  const blogId = request.params.id;
 
-  let ans = await Blog.findById(id);
-  let deletion = await Blog.deleteOne(ans);
-  console.log(deletion);
-  response.status(204).end();
+  if (!request.token) return response.json({error: "Missing token"})
+  const verifiedToken = jsonwebtoken.verify(request.token,process.env.SECRET)
+  console.log(verifiedToken)
+  if (!verifiedToken.id) return response.json({error: "missing id"})
+
+  const blogObj = await Blog.findById(blogId);
+  const userObj = await User.findById(verifiedToken.id);
+  
+
+  if (blogObj.user.toString() == verifiedToken.id){
+    console.log("they match")
+    
+    
+
+    const deletion = await Blog.deleteOne(blogObj)
+    
+    console.log(deletion)
+    //Update the user blog info
+
+    userObj.blogs = userObj.blogs.filter(element => element.toString() !== blogId)
+    userObj.save()
+
+    return response.status(204).send("user deleted")
+  }
+  else{
+    return response.json("Not authorized to delete this")
+  }
+  // let deletion = await Blog.deleteOne(ans);
+  // console.log(deletion);
 });
 
 blogRouter.put("/:id", async (request, response) => {
