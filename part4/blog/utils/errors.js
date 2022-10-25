@@ -14,25 +14,25 @@ const errorHandler = (error, request, response, next) => {
   }
   if (error.name === "ReferenceError") {
     console.log(error.name);
-    return response.status(404).json({ error: error.message });
+    return response.status(404).json({ errorType: error.name, error: error.message });
   }
 
   if (error.name === "ValidationError") {
     console.log(error);
     console.log(error.message);
-    return response.status(404).json({ error: error.message });
+    return response.status(404).json({ errorType: error.name, error: error.message });
   }
 
   if (error.name === "MongoServerError") {
     console.log(error);
     console.log(error.message);
-    return response.status(400).json({ error: error.message });
+    return response.status(400).json({ errorType: error.name, error: error.message });
   }
   
   //This is to catch JWT authorization errors 
   if (error.name === "JsonWebTokenError") {
     console.log(error);
-    return response.status(400).json({ error: error.message });
+    return response.status(400).json({ errorType: error.name, error: error.message });
   }
 
   console.log(error);

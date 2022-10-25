@@ -11,13 +11,11 @@ loginRouter.post("/", async (request, response) => {
   const { username, password } = request.body;
 
   //Find returns an array. Probably better to use findOne
-  const person = await User.find({ username: username });
+  //ES6 style: if key and value are the same, we can just specify one value 
+  const person = await User.find({ username });
 
   //Compare the password that was passed with the hashed password using bcrypt since the actual passwords are not stored in the database
-  const passwordCorrect =
-    person.length === 0
-      ? false
-      : await bcrypt.compare(password, person[0].passwordHash);
+  const passwordCorrect = person.length === 0 ? false : await bcrypt.compare(password, person[0].passwordHash);
 
   if (!passwordCorrect && person.length === 0)
     return response.status(401).send("Wrong User name & Password!");
@@ -29,12 +27,9 @@ loginRouter.post("/", async (request, response) => {
   };
 
   //What this does is add the "payload" as the first parameter and second parameter is the secret key
-  //This is how this is all signed
+  //This is how this is all signed. We pass in whatever waant to the first parameter. Here, we pass in both the username and the id we retrieved from the database, and then also a date object
   const token = jsonwebtoken.sign(userForToken, process.env.SECRET);
-  console.log(token)
-  response
-    .status(220)
-    .json({ token, username: person[0].username, name: person[0].name });
+  response.status(220).json({ token, username: person[0].username, name: person[0].name });
 });
 
 module.exports = loginRouter;

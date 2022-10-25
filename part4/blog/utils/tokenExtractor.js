@@ -14,16 +14,17 @@ const getTokenFrom = (request, response, next) => {
     // console.log(request.get("authorization"));
     // We can also get stuff like host name through request.get("host") or request.get("User-Agent")
     //but NOT request.get("body") to see contents since body is not a header
-    const authorization = request.get("Authorization");
-  
-    if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-      //Since authorization is a string, it consists of "bearer <tokenname>".
-      //Doing substring(7) means we return the substring starting from index 7, which makes sense
-      //since this returns the token itself and removes the bearer and space from the string
+    if ('Authorization' in request.headers){
 
-      //Here we extracted this as a middleware function and added a "token" field to the request object
-      //The request object now has a new field called token 
-      request.token = authorization.substring(7)
+        authorization = request.get("Authorization");
+            if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+            //Since authorization is a string, it consists of "bearer <tokenname>".
+            //Doing substring(7) means we return the substring starting from index 7, which makes sense
+            //since this returns the token itself and removes the bearer and space from the string
+            //Here we extracted this as a middleware function and added a "token" field to the request object
+            //The request object now has a new field called token 
+            request.token = authorization.substring(7)
+        }
     }
     return next()    
   };

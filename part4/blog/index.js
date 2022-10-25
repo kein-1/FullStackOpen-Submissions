@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 require("express-async-errors");
 const { PORT, MONGODB_URL } = require("./utils/config");
 const Blog = require("./models/blog");
-const blogRouter = require("./routes/blog");
+const blogsRouter = require("./routes/blog");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 const errorHandler = require("./utils/errors");
@@ -25,12 +25,12 @@ app.use(cors());
 app.use(tokenExtractor)
 
 //Saying anything that starts with /api/blogs will use the router stuff we imported and basically add all those different routes to the end of this type of route
-app.use("/api/blogs", blogRouter);
+app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 
 //This is our middelware for error handling. Always put it at the end since middleware will load in the order they are defined
-//Since we have the 'require('express-async-errors')' defined above, all errors will automatically run to this middelware
+//Since we have the 'require('express-async-errors')' defined above, all errors in async functions will automatically run to this middelware
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Running on ${PORT}`));
