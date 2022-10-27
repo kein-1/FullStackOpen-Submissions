@@ -34,11 +34,19 @@ const App = () => {
       <form onSubmit={login}>
         <div>
           username:
-          <input type="text" value={username} onChange={setUserHandler} />
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </div>
         <div>
           password:
-          <input type="text" value={password} onChange={setPasswordHandler} />
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         <button type="submit">Log in! </button>
       </form>
@@ -51,7 +59,7 @@ const App = () => {
         <h2>Create a new blog ! </h2>
         <form onSubmit={addBlog}>
           <h3>
-            title:{" "}
+            title:
             <input
               type="text"
               value={title}
@@ -60,7 +68,7 @@ const App = () => {
             />
           </h3>
           <h3>
-            author:{" "}
+            author:
             <input
               type="text"
               value={author}
@@ -69,7 +77,7 @@ const App = () => {
             />
           </h3>
           <h3>
-            url:{" "}
+            url:
             <input
               type="text"
               value={url}
@@ -112,7 +120,8 @@ const App = () => {
       //Save the latest blog's id to this state. This is based on the user's current list of blogs
       setLatestBlog(filteredBlogs[filteredBlogs.length - 1].id);
 
-      console.log("Log IN Button clicked");
+      //Use localstorage to save the user
+      window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user));
     } catch (error) {
       console.log(error);
       console.log(error.response.data);
@@ -139,14 +148,7 @@ const App = () => {
     }
   };
 
-  const setUserHandler = (e) => {
-    setUsername(e.target.value);
-  };
-  const setPasswordHandler = (e) => {
-    setPassword(e.target.value);
-  };
-  
-  //Fix this when i get home 
+  //Fix this when i get home
   const deleteLatest = async (blogId) => {
     if (latestBlog.length === 0) {
     }
@@ -161,7 +163,9 @@ const App = () => {
     <div>
       <h2>Blogs by {user.username} </h2>
       <h3> {user.username} logged in </h3>
-      {userBlogs.map((element) => <Blog key={element.id} {...element} />}
+      {userBlogs.map((element) => (
+        <Blog key={element.id} {...element} />
+      ))}
       {blogForm()}
       <button onClick={deleteLatest}> Delete latest blog </button>
     </div>
