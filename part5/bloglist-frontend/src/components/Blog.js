@@ -1,16 +1,10 @@
+const Blog = (prop) => {
+  const { title, author } = prop;
+  return (
+    <div>
+      {title} {author}
+    </div>
+  );
+};
 
-
-const Blog = ({blog,id}) => {
-  if (blog.user === id){
-    console.log(blog)
-
-    return (
-      <div>
-        {blog.title} {blog.author}
-      </div>  
-    )
-  }
- 
-}
-
-export default Blog
+export default Blog;
