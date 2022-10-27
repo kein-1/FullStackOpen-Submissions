@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const getBlogs = async () => {
-  const item = await axios.get("http://localhost:3001/api/blogs");
+const getBlogs = async (url) => {
+  const item = await axios.get(url);
   return item.data;
 };
 

@@ -43,7 +43,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
   const user = request.user
 
   const creator = await User.findById(user);
-
+  console.log(creator)
   if (content.title && content.author) {
     const blog_post = new Blog({
       title: content.title,
@@ -57,7 +57,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
     const new_post = await blog_post.save();
 
     creator.blogs = creator.blogs.concat(new_post._id);
-    // await creator.save();
+    await creator.save();
     console.log("saved!");
 
     response.json(blog_post);

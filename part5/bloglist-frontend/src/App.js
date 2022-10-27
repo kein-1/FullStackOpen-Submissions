@@ -7,17 +7,18 @@ import loginService from './services/login'
 
 
 const loginUrl = 'http://localhost:3001/api/login'
+const blogsUrl = 'http://localhost:3001/api/blogs'
 
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [userToken, setToken] = useState(null)
+  const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
 
   useEffect(() => {
-    getBlogs().then(blogs =>
+    getBlogs(blogsUrl).then(blogs =>
       setBlogs( blogs )
     )  
   }, [])
@@ -44,41 +45,46 @@ const App = () => {
     console.log("Log IN Button clicked")
 
     try{
-      const response = await loginService(loginUrl,{username,password})
+      //In using POST, Axios automatically adds that object field into the body of the request object
+      //In the response, this is based on what we defined in the server. So if the login is sucessful, I defined a response to consist of a json object that has the token, user, username, and userID
+      //If we console.log(user), we should see all this stuff 
+      //Note in Axios, we can acess the response field using the .data parameter (shown in login.js)
+      //The axios api defines .data as the response returned by the server
+      const user = await loginService(loginUrl,{username,password})
+      console.log(user)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+      console.log("Log IN Button clicked")
+
     }
-    catch {
+    catch (error) {
+      console.log(error)
+      console.log(error.response.data)
       console.log("ERROR")
     }
-
-
-
   }
 
-  const setUserHandler = (e) => {
-    console.log(e.target.value)
-    setUsername(e.target.value)
-  }
-
-  const setPasswordHandler = (e) => {
-    console.log(e.target.value)
-    setPassword(e.target.value)
-  }
+  const setUserHandler = (e) => {setUsername(e.target.value)}
+  const setPasswordHandler = (e) => {setPassword(e.target.value)}
   
   
-  if (userToken === null){
+  if (user === null){
     return (
       <div>
         {loginForm()}
       </div>
     )
   }
-
+  return (
   <div>
-      <h2>blogs</h2>
+      <h2>Blogs by {user.username} </h2>
+      <h3> {user.username} logged in </h3>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} id = {user.id}/>
       )}
   </div>
+  )
 
 
 }
