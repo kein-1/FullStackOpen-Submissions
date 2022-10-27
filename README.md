@@ -26,3 +26,5 @@ Utilized the following new packages:
 - bcrypt - hashes the password and stores that hashed password into the database. 
 - jwt - json webtoken utilized for authorization 
      
+#### Part 5: React testing, front-end integration
+
