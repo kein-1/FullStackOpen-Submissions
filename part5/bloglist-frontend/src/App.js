@@ -8,11 +8,25 @@ import {
 } from "./services/blogServices";
 import loginService from "./services/login";
 
-// const loginUrl = 'http://localhost:3001/api/login'
-// const blogsUrl = 'http://localhost:3001/api/blogs'
+const loginUrl = 'http://localhost:3001/api/login'
+const blogsUrl = 'http://localhost:3001/api/blogs'
 
-const loginUrl = "https://4rjbcc-3001.preview.csb.app/api/login";
-const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+// const loginUrl = "https://4rjbcc-3001.preview.csb.app/api/login";
+// const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+
+
+const Notification = (props) => {
+  return (
+    <h3>A new blog made!</h3>
+  )
+}
+
+const ErrorNotification = (props) => {
+  return (
+    <h3>Wrong username and password!</h3>
+  )
+}
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -24,10 +38,36 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [latestBlog, setLatestBlog] = useState("");
+  const [added,setAdded] = useState(false)
+  const [success,setSucess] = useState(null)
+
 
   useEffect(() => {
     getBlogs(blogsUrl).then((blogs) => setBlogs(blogs));
   }, []);
+
+  useEffect(() => {
+
+    //Returns the item that is stored as the key we used 
+    const loggedInUser = localStorage.getItem('loggedInBlogUser')
+    const userBlogs = localStorage.getItem('userBlogs')
+
+    if (loggedInUser){
+
+      //Parse here retrieves the DOM string that is saved to the browser and converts it to JavaScript Object 
+      const retrievedUser = JSON.parse(loggedInUser)
+      const retrievedUserBlogs = JSON.parse(userBlogs)
+      console.log(retrievedUserBlogs)
+      setUser(retrievedUser)
+      setToken(retrievedUser.token)
+      setUserBlogs(retrievedUserBlogs)
+      setLatestBlog(retrievedUserBlogs.at(-1).id);
+  
+    }
+    },[])
+  
+  
+
   const loginForm = () => (
     <>
       <h2>Log In to Your Application</h2>
@@ -114,25 +154,43 @@ const App = () => {
 
       //After the user successfully logsin, we want to set the current user's blogs equal to
       //a filtered list of blogs that belong to the user
-      const filteredBlogs = blogs.filter((element) => element.user === user.id);
+      const filteredBlogs = blogs.filter(element => element.user === user.id);
       setUserBlogs(filteredBlogs);
 
       //Save the latest blog's id to this state. This is based on the user's current list of blogs
       setLatestBlog(filteredBlogs[filteredBlogs.length - 1].id);
 
-      //Use localstorage to save the user
+      //Use localstorage to save the user's blog and info. Only strings can be saved to the browser
+      //So we use JSON.stringify
+      console.log(`User blogs ${userBlogs}`)
+
       window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user));
+      window.localStorage.setItem("userBlogs", JSON.stringify(filteredBlogs));
+
+      //DO NOT do the code below! userBlogs is updated AFTER this block of code is complete.
+      //The current value of userBlogs is still an [] array because after the user logs in,
+      //the userBlogs state is an empty state and it gets rendered here 
+
+      // window.localStorage.setItem("userBlogs", JSON.stringify(userBlogs));
+
     } catch (error) {
       console.log(error);
       console.log(error.response.data);
       console.log("ERROR");
+      setUsername("");
+      setPassword("");
+      setSucess(true)
     }
   };
+
+  const logout = () => {
+    window.localStorage.clear()
+    setUser(null)
+  }
 
   const addBlog = async (e) => {
     e.preventDefault();
     console.log("Add button clicked");
-
     try {
       const response = await createBlog(blogsUrl, { title, author, url });
       console.log(`Front end`);
@@ -140,7 +198,18 @@ const App = () => {
       setTitle("");
       setAuthor("");
       setUrl("");
+      
+      //Update the state for tte latest userBlogs by creating a new array of blogs 
+      const updatedUserBlogs = [...userBlogs, response]
+      setUserBlogs(updatedUserBlogs)
       setLatestBlog(response.id);
+      
+      //After adding a blog, we need to update the local storage so when we refresh, it saves
+      window.localStorage.setItem("userBlogs", JSON.stringify(updatedUserBlogs)); 
+      
+      
+      setAdded(true)
+
     } catch (error) {
       console.log(error);
       console.log(error.response.data);
@@ -148,21 +217,44 @@ const App = () => {
     }
   };
 
-  //Fix this when i get home
-  const deleteLatest = async (blogId) => {
-    if (latestBlog.length === 0) {
+
+  const deleteLatest = async () => {
+    if (latestBlog.length !== 0) {
+      const response = await deleteBlog(blogsUrl + `/${latestBlog}`);
+      console.log(`in resposne frontend ${response}`)
+      //This means successful deletion
+      if (response.status === 204){
+        const updatedUserBlogs = userBlogs.filter(element => element.id !== latestBlog)
+        console.log(updatedUserBlogs)
+        setUserBlogs(updatedUserBlogs)
+
+        //After deleting a blog, we need to update the local storage so when we refresh, it saves
+        window.localStorage.setItem("userBlogs", JSON.stringify(updatedUserBlogs)); 
+      }
     }
-    const response = await deleteBlog(blogsUrl + `/${latestBlog}`);
   };
 
+  //Run the error notifcation if sucess state becomes true. This value is set if we fail to 
+  //Retrieve the right user 
   if (user === null) {
-    return <div>{loginForm()}</div>;
+    return (
+      <>
+        {success === true && <ErrorNotification/>}
+        {loginForm()}
+      </>
+    )
+    ;
   }
 
   return (
     <div>
+      {added === true && <Notification/>}
+
+
       <h2>Blogs by {user.username} </h2>
-      <h3> {user.username} logged in </h3>
+      <h3> {user.username} logged in 
+        <button onClick={logout}> logout </button>
+      </h3>
       {userBlogs.map((element) => (
         <Blog key={element.id} {...element} />
       ))}

@@ -60,11 +60,11 @@ blogRouter.post("/", userExtractor, async (request, response) => {
     });
 
     //Returns the new blog post that is saved. We can take its ID object and pass it to our users which stores an array of blog IDs. So now we  \know which user created which post
-    // const new_post = await blog_post.save();
+    const new_post = await blog_post.save();
 
-    // creator.blogs = creator.blogs.concat(new_post._id);
-    // await creator.save();
-    // console.log("saved!");
+    creator.blogs = creator.blogs.concat(new_post._id);
+    await creator.save();
+    console.log("saved!");
 
     response.json(blog_post);
   } else {
@@ -74,11 +74,13 @@ blogRouter.post("/", userExtractor, async (request, response) => {
 
 blogRouter.delete("/:id", userExtractor, async (request, response) => {
   const blogId = request.params.id;
+  console.log(`In blog id ${blogId}`)
 
   if (!request.token) return response.json({ error: "Missing token" });
 
   const blogObj = await Blog.findById(blogId);
   const userObj = await User.findById(request.user);
+
 
   if (blogObj.user.toString() == request.user) {
     //Delete the blog in our blog collections

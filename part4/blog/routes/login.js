@@ -8,7 +8,6 @@ const jsonwebtoken = require("jsonwebtoken");
 //Check if the user is in the system. If so, we check if the password entered
 //is correct
 loginRouter.post("/", async (request, response) => {
-  console.log(request);
   const { username, password } = request.body;
 
   //Find returns an array. Probably better to use findOne
