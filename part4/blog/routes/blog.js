@@ -17,7 +17,6 @@ Notice how with router we cut off the beginning portion
 */
 
 blogRouter.get("/", async (request, response) => {
-  console.log("in get");
   let ans = await Blog.find({});
   response.json(ans);
 });
@@ -48,7 +47,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
   // console.log(content);
 
   const creator = await User.findById(user);
-  console.log(creator);
+  // console.log(creator);
 
   if (content.title && content.author) {
     const blog_post = new Blog({
@@ -64,11 +63,13 @@ blogRouter.post("/", userExtractor, async (request, response) => {
 
     creator.blogs = creator.blogs.concat(new_post._id);
     await creator.save();
+    
+    console.log(blog_post);
     console.log("saved!");
 
     response.json(blog_post);
   } else {
-    response.status(404).send("ADD TITLE");
+    response.status(400).send("MISSING TITLE AND AUTHOR");
   }
 });
 

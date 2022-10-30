@@ -27,4 +27,4 @@ Utilized the following new packages:
 - jwt - json webtoken utilized for authorization 
      
 #### Part 5: React testing, front-end integration
-
+Built the frontend for our blog app. I decided to incorporate Tailwind CSS for this project as an opportunity to both learn and use Tailwind to style my project 

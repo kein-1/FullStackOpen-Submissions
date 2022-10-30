@@ -6,7 +6,7 @@ const LoginForm = (props) => {
     return (
     <>
       <h2>Log In to Your Application</h2>
-      <form onSubmit={login} className="flex flex-col w-3/5 border-solid border-2 rounded-lg border-indigo-600 p-6 gap-4">
+      <form onSubmit={login} className="flex flex-col w-3/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4">
         <div className="p-1.5 flex gap-4 justify-center items-center">
           <h3>Username:</h3>
           <input className="p-1.5 w-full shadow appearance-none "
@@ -23,7 +23,7 @@ const LoginForm = (props) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" className="border w-full p-2 text-base rounded-lg">Log in! </button>
+        <button type="submit" className="border w-full p-2 text-base rounded-lg hover:bg-slate-50">Log in! </button>
       </form>
     </>
     )

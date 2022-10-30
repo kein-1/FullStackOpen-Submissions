@@ -152,9 +152,12 @@ const App = () => {
       //This means successful deletion
       if (response.status === 204){
         const updatedUserBlogs = userBlogs.filter(element => element.id !== latestBlog)
+
+        
         console.log(updatedUserBlogs)
         setUserBlogs(updatedUserBlogs)
-
+        setLatestBlog(updatedUserBlogs.at(-1).id);
+        
         //After deleting a blog, we need to update the local storage so when we refresh, it saves
         window.localStorage.setItem("userBlogs", JSON.stringify(updatedUserBlogs)); 
       }
@@ -173,20 +176,26 @@ const App = () => {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8 w-5/6 m-auto">
       {added === true && <Notification/>}
 
-      <div className="flex justify-between">
-      <h3 className="text-3xl font-bold underline" >Blogs by {user.username} </h3>
-        <button onClick={logout} className="border-2 rounded-lg border-indigo-600 p-2"> logout </button>
-      </div>
-      <ul className="list-decimal ">
+      <nav className="flex justify-between mb-8">
+        <h3 className="text-3xl font-bold underline" >Blogs by {user.username} </h3>
+        <div className="flex gap-4">
+          
+          <button className="border-2 rounded-lg border-indigo-600 p-2" onClick={deleteLatest}> Delete latest blog </button>
+
+          <button onClick={logout} className="border-2 rounded-lg border-indigo-600 p-2"> logout </button>
+          
+        </div>
+      </nav>
+      <ul className="list-decimal space-y-2 list-inside">
         {userBlogs.map((element) => (
           <Blog key={element.id} {...element} />
         ))}
       </ul>
       <BlogForm title={title} author={author} url={url} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl} addBlog={addBlog}/>
-      <button onClick={deleteLatest}> Delete latest blog </button>
+      
     </div>
   );
 };
