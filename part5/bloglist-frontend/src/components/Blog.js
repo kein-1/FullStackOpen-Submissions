@@ -1,9 +1,9 @@
 const Blog = (prop) => {
   const { title, author } = prop;
   return (
-    <div>
+    <li>
       {title} {author}
-    </div>
+    </li>
   );
 };
 

@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
+import {getBlogs,setToken,createBlog,deleteBlog} from "./services/blogServices";
+import './index.css'
+
+
 import Blog from "./components/Blog";
-import {
-  getBlogs,
-  setToken,
-  createBlog,
-  deleteBlog,
-} from "./services/blogServices";
+import LoginForm from "./components/LoginForm"
+import BlogForm from "./components/BlogForm"
+import Notification from "./components/Notification";
+import ErrorNotification from "./components/ErrorNotification";
+
+
 import loginService from "./services/login";
 
 const loginUrl = 'http://localhost:3001/api/login'
@@ -13,19 +17,6 @@ const blogsUrl = 'http://localhost:3001/api/blogs'
 
 // const loginUrl = "https://4rjbcc-3001.preview.csb.app/api/login";
 // const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
-
-
-const Notification = (props) => {
-  return (
-    <h3>A new blog made!</h3>
-  )
-}
-
-const ErrorNotification = (props) => {
-  return (
-    <h3>Wrong username and password!</h3>
-  )
-}
 
 
 const App = () => {
@@ -67,70 +58,6 @@ const App = () => {
     },[])
   
   
-
-  const loginForm = () => (
-    <>
-      <h2>Log In to Your Application</h2>
-      <form onSubmit={login}>
-        <div>
-          username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          password:
-          <input
-            type="text"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Log in! </button>
-      </form>
-    </>
-  );
-
-  const blogForm = () => {
-    return (
-      <>
-        <h2>Create a new blog ! </h2>
-        <form onSubmit={addBlog}>
-          <h3>
-            title:
-            <input
-              type="text"
-              value={title}
-              placeholder="title"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </h3>
-          <h3>
-            author:
-            <input
-              type="text"
-              value={author}
-              placeholder="author"
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </h3>
-          <h3>
-            url:
-            <input
-              type="text"
-              value={url}
-              placeholder="url"
-              onChange={(e) => setUrl(e.target.value)}
-            />
-          </h3>
-          <button type="submit"> Create a blog! </button>
-        </form>
-      </>
-    );
-  };
-
   const login = async (e) => {
     e.preventDefault();
     console.log("Log IN Button clicked");
@@ -238,27 +165,27 @@ const App = () => {
   //Retrieve the right user 
   if (user === null) {
     return (
-      <>
+      <div className="flex flex-col items-center justify-center h-full gap-4">
         {success === true && <ErrorNotification/>}
-        {loginForm()}
-      </>
+        <LoginForm login={login} setUsername = {setUsername} setPassword = {setPassword} username={username} password={password} />
+      </div>
     )
-    ;
   }
 
   return (
-    <div>
+    <div className="p-8">
       {added === true && <Notification/>}
 
-
-      <h2>Blogs by {user.username} </h2>
-      <h3> {user.username} logged in 
-        <button onClick={logout}> logout </button>
-      </h3>
-      {userBlogs.map((element) => (
-        <Blog key={element.id} {...element} />
-      ))}
-      {blogForm()}
+      <div className="flex justify-between">
+      <h3 className="text-3xl font-bold underline" >Blogs by {user.username} </h3>
+        <button onClick={logout} className="border-2 rounded-lg border-indigo-600 p-2"> logout </button>
+      </div>
+      <ul className="list-decimal ">
+        {userBlogs.map((element) => (
+          <Blog key={element.id} {...element} />
+        ))}
+      </ul>
+      <BlogForm title={title} author={author} url={url} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl} addBlog={addBlog}/>
       <button onClick={deleteLatest}> Delete latest blog </button>
     </div>
   );
