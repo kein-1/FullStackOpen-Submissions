@@ -1,7 +1,6 @@
 import { useState } from "react";
-
 const LoginForm = (props) => {
-  const { login } = props;
+  const { login, setLoginStatus } = props;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +17,7 @@ const LoginForm = (props) => {
 
   return (
     <>
-      <h2>Log In to Your Application</h2>
+      <h2>Log In to Your Blogs!</h2>
       <form
         onSubmit={loginMain}
         className="flex flex-col w-2/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4"
@@ -45,7 +44,15 @@ const LoginForm = (props) => {
           type="submit"
           className="border w-full p-2 text-base rounded-lg hover:bg-slate-50"
         >
-          Log in!{" "}
+          Log in!
+        </button>
+
+        <button
+          type="submit"
+          className="border w-full p-2 text-base rounded-lg hover:bg-slate-50"
+          onClick={() => setLoginStatus(true)}
+        >
+          Don't have an account? Register here
         </button>
       </form>
     </>

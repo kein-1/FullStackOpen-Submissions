@@ -10,6 +10,7 @@ import "./index.css";
 
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
+import RegistrationForm from "./components/RegistrationForm";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import ErrorNotification from "./components/ErrorNotification";
@@ -23,6 +24,8 @@ const App = () => {
 
   const [latestBlog, setLatestBlog] = useState("");
   const [added, setAdded] = useState(false);
+  const [loginStatus, setLoginStatus] = useState(false);
+
   const [success, setSucess] = useState(null);
 
   useEffect(() => {
@@ -157,38 +160,40 @@ const App = () => {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
         {success === true && <ErrorNotification />}
-        <LoginForm login={login} />
+        {loginStatus === false ? (
+          <LoginForm login={login} setLoginStatus={setLoginStatus} />
+        ) : (
+          <RegistrationForm setLoginStatus={setLoginStatus} />
+        )}
       </div>
     );
   }
 
   return (
-    <div className="p-8 w-5/6 m-auto">
+    <div className="p-8 w-4/6 m-auto">
       {added === true && <Notification />}
 
       <nav className="flex justify-between mb-8">
         <h3 className="text-3xl font-bold underline">
-          Blogs by {user.username}{" "}
+          Blogs by {user.username}
         </h3>
         <div className="flex gap-4">
           <button
             className="border-2 rounded-lg border-indigo-600 p-2"
             onClick={deleteLatest}
           >
-            {" "}
-            Delete latest blog{" "}
+            Delete latest blog
           </button>
 
           <button
             onClick={logout}
             className="border-2 rounded-lg border-indigo-600 p-2"
           >
-            {" "}
-            logout{" "}
+            logout
           </button>
         </div>
       </nav>
-      <ul className="list-decimal space-y-2 list-inside">
+      <ul className="list-none space-y-6 list-inside">
         {userBlogs.map((element) => (
           <Blog
             key={element.id}
@@ -196,6 +201,7 @@ const App = () => {
             addLikes={addLikes}
             userBlogs={userBlogs}
             setUserBlogs={setUserBlogs}
+            deleteBlog={deleteBlog}
           />
         ))}
       </ul>

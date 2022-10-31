@@ -56,6 +56,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
       url: content.url,
       likes: content.likes || 0,
       user: user,
+      content: content.content,
     });
 
     //Returns the new blog post that is saved. We can take its ID object and pass it to our users which stores an array of blog IDs. So now we  \know which user created which post

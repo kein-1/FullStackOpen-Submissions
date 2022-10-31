@@ -1,17 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
+/* 
+
+Here we can apply universal styles to each tag. It is a good idea to use the @apply for each 
+
+*/
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    @apply h-screen;
+  @apply h-screen;
+}
+
+#root {
+  height: 100%;
 }
 
 
-#root{
-    height: 100%;
+/* Here we can apply universal styles to each tag. It is a good idea to use the @apply for each 
+I just defined text and text size here so I don't need to define these classes in my app
+
+*/
+
+@layer base {
+  h2 {
+    @apply font-roboto text-2xl;
+  }
+  h3 {
+    @apply font-roboto text-xl;
+  }
+  h3 {
+    @apply font-roboto text-xl;
+  }
+
+  h4 {
+    @apply font-roboto text-sm;
+  }
+  p {
+    @apply font-roboto text-base;
+  }
 }
