@@ -47,9 +47,10 @@ const Blog = (props) => {
       <h3> By: {author}</h3>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       <h3> Likes: {likes}</h3>
-      <button className="p-3 border-solid border-2 rounded-lg text-xs" onClick={addLikesMain}> Add likes </button>
-      <button className="p-3 border-solid border-2 rounded-lg text-xs" onClick={() => setShowAll(false)}>Hide</button>
-
+      <div>
+        <button className="p-3 border-solid border-2 rounded-lg text-xs" onClick={addLikesMain}> Add likes </button>
+        <button className="p-3 border-solid border-2 rounded-lg text-xs" onClick={() => setShowAll(false)}>Hide</button>
+      </div>
     </li>
   );
 };

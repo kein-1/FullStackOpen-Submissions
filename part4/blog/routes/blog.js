@@ -63,7 +63,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
 
     creator.blogs = creator.blogs.concat(new_post._id);
     await creator.save();
-    
+
     console.log(blog_post);
     console.log("saved!");
 
@@ -75,13 +75,12 @@ blogRouter.post("/", userExtractor, async (request, response) => {
 
 blogRouter.delete("/:id", userExtractor, async (request, response) => {
   const blogId = request.params.id;
-  console.log(`In blog id ${blogId}`)
+  console.log(`In blog id ${blogId}`);
 
   if (!request.token) return response.json({ error: "Missing token" });
 
   const blogObj = await Blog.findById(blogId);
   const userObj = await User.findById(request.user);
-
 
   if (blogObj.user.toString() == request.user) {
     //Delete the blog in our blog collections
@@ -104,30 +103,29 @@ blogRouter.delete("/:id", userExtractor, async (request, response) => {
   }
 });
 
+blogRouter.put("/:id", userExtractor, async (request, response) => {
+  console.log("IN PUT");
 
-blogRouter.put("/:id", userExtractor, async (request,response) => {
+  const blogId = request.params.id;
+  const newContent = request.body;
+  console.log("This is new content");
+  console.log(newContent);
+  if (!request.token)
+    return response.status(400).json({ error: "Missing token" });
 
-  console.log("IN PUT")
+  //Uses the findbyIdAndUpdateMethod here to add hte likes. newContent is an object
+  const blogObj = await Blog.findByIdAndUpdate(blogId, newContent, {
+    new: true,
+  });
 
-  const blogId = request.params.id
-  const newContent = request.body
+  console.log("*********");
+  console.log(blogObj);
+  console.log("*********");
 
-  if (!request.token) return response.status(400).json({error:"Missing token"})
-
-  //Uses the findbyIdAndUpdateMethod here to add hte likes. newContent is an object 
-  const blogObj = await Blog.findByIdAndUpdate(blogId,newContent,{new:true});
-  
-  console.log("*********")
-  console.log(blogObj)
-  console.log("*********")
-
-  console.log("updated blog post with a new like")
-  //Remember in axios in our frontend, we can access the returned response using the ".data" property 
-  return response.status(200).json(blogObj)
-
-})
-
-
+  console.log("updated blog post with a new like");
+  //Remember in axios in our frontend, we can access the returned response using the ".data" property
+  return response.status(200).json(blogObj);
+});
 
 //Then we can export it out. In our main file, we need to specifiy an
 //app.use("BASE URL HERE", router we exported)
