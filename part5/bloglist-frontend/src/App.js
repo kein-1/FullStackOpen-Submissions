@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {getBlogs,setToken,createBlog,deleteBlog} from "./services/blogServices";
+import {getBlogs,setToken,createBlog,deleteBlog, addLikes} from "./services/blogServices";
 import './index.css'
 
 
@@ -12,7 +12,7 @@ import ErrorNotification from "./components/ErrorNotification";
 
 import loginService from "./services/login";
 
-const loginUrl = 'http://localhost:3001/api/login'
+// const loginUrl = 'http://localhost:3001/api/login'
 const blogsUrl = 'http://localhost:3001/api/blogs'
 
 // const loginUrl = "https://4rjbcc-3001.preview.csb.app/api/login";
@@ -23,18 +23,14 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [userBlogs, setUserBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  
   const [latestBlog, setLatestBlog] = useState("");
   const [added,setAdded] = useState(false)
   const [success,setSucess] = useState(null)
 
 
   useEffect(() => {
-    getBlogs(blogsUrl).then((blogs) => setBlogs(blogs));
+    getBlogs().then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
@@ -58,8 +54,8 @@ const App = () => {
     },[])
   
   
-  const login = async (e) => {
-    e.preventDefault();
+  //This is the function passed to our LoginForm, which has been refactored with all the relevant states to the component that controls login, which is the LoginForm we created. 
+  const login = async (object) => {
     console.log("Log IN Button clicked");
 
     try {
@@ -68,28 +64,25 @@ const App = () => {
       //If we console.log(user), we should see all this stuff
       //Note in Axios, we can acess the response field using the .data parameter (shown in login.js)
       //The axios api defines .data as the response returned by the server
-      const user = await loginService(loginUrl, { username, password });
-      console.log(user);
 
+      //loginService is defined in the backend. It actually uses 2 parameters but we can omit 1 of them here since the other one is defined in the backend where this function is defined 
+      const user = await loginService(object);
+      
       //Save the response from the server to the user state
       setUser(user);
       setToken(user.token);
 
-      //Reset the fields
-      setUsername("");
-      setPassword("");
-
       //After the user successfully logsin, we want to set the current user's blogs equal to
       //a filtered list of blogs that belong to the user
       const filteredBlogs = blogs.filter(element => element.user === user.id);
+
       setUserBlogs(filteredBlogs);
 
       //Save the latest blog's id to this state. This is based on the user's current list of blogs
-      setLatestBlog(filteredBlogs[filteredBlogs.length - 1].id);
+      setLatestBlog(filteredBlogs.at(-1).id);
 
       //Use localstorage to save the user's blog and info. Only strings can be saved to the browser
       //So we use JSON.stringify
-      console.log(`User blogs ${userBlogs}`)
 
       window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user));
       window.localStorage.setItem("userBlogs", JSON.stringify(filteredBlogs));
@@ -102,10 +95,8 @@ const App = () => {
 
     } catch (error) {
       console.log(error);
-      console.log(error.response.data);
+      console.log(error.response);
       console.log("ERROR");
-      setUsername("");
-      setPassword("");
       setSucess(true)
     }
   };
@@ -115,18 +106,15 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (e) => {
-    e.preventDefault();
-    console.log("Add button clicked");
-    try {
-      const response = await createBlog(blogsUrl, { title, author, url });
+  //Refactored all this relevant code to the Blog Form component. Now we are only passing in this function and a few other parameters to the Blog Form Component. All the state related to adding a blog is now defined in the component itself
+  const addBlog = async (blogObjectParameters) => {
+
+    try{
+      const response = await createBlog(blogObjectParameters);
       console.log(`Front end`);
       console.log(response);
-      setTitle("");
-      setAuthor("");
-      setUrl("");
       
-      //Update the state for tte latest userBlogs by creating a new array of blogs 
+      //Update the state for the latest userBlogs by creating a new array of blogs 
       const updatedUserBlogs = [...userBlogs, response]
       setUserBlogs(updatedUserBlogs)
       setLatestBlog(response.id);
@@ -134,33 +122,39 @@ const App = () => {
       //After adding a blog, we need to update the local storage so when we refresh, it saves
       window.localStorage.setItem("userBlogs", JSON.stringify(updatedUserBlogs)); 
       
-      
       setAdded(true)
-
-    } catch (error) {
-      console.log(error);
-      console.log(error.response.data);
-      console.log("ERROR");
     }
+    catch(error) {
+      console.log("ERROR")
+      console.log(error)
+      console.log(error.response.data)
+    }
+
   };
 
 
   const deleteLatest = async () => {
-    if (latestBlog.length !== 0) {
-      const response = await deleteBlog(blogsUrl + `/${latestBlog}`);
-      console.log(`in resposne frontend ${response}`)
-      //This means successful deletion
-      if (response.status === 204){
-        const updatedUserBlogs = userBlogs.filter(element => element.id !== latestBlog)
+    try{
 
-        
-        console.log(updatedUserBlogs)
-        setUserBlogs(updatedUserBlogs)
-        setLatestBlog(updatedUserBlogs.at(-1).id);
-        
-        //After deleting a blog, we need to update the local storage so when we refresh, it saves
-        window.localStorage.setItem("userBlogs", JSON.stringify(updatedUserBlogs)); 
+      if (latestBlog.length !== 0) {
+        const response = await deleteBlog(latestBlog);
+        console.log(`in resposne frontend ${response}`)
+        //This means successful deletion
+        if (response.status === 204){
+          const updatedUserBlogs = userBlogs.filter(element => element.id !== latestBlog)
+
+          console.log(updatedUserBlogs)
+          setUserBlogs(updatedUserBlogs)
+          setLatestBlog(updatedUserBlogs.at(-1).id);
+          
+          //After deleting a blog, we need to update the local storage so when we refresh, it saves
+          window.localStorage.setItem("userBlogs", JSON.stringify(updatedUserBlogs)); 
+        }
       }
+    }
+    catch (error){
+      console.log("DELETION ERROR")
+      console.log(error)
     }
   };
 
@@ -170,7 +164,7 @@ const App = () => {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
         {success === true && <ErrorNotification/>}
-        <LoginForm login={login} setUsername = {setUsername} setPassword = {setPassword} username={username} password={password} />
+        <LoginForm login={login}/>
       </div>
     )
   }
@@ -191,11 +185,11 @@ const App = () => {
       </nav>
       <ul className="list-decimal space-y-2 list-inside">
         {userBlogs.map((element) => (
-          <Blog key={element.id} {...element} />
+          <Blog key={element.id} {...element} addLikes={addLikes} userBlogs={userBlogs} setUserBlogs={setUserBlogs} />
         ))}
       </ul>
-      <BlogForm title={title} author={author} url={url} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl} addBlog={addBlog}/>
-      
+      {/* <BlogForm title={title} author={author} url={url} setTitle={setTitle} setAuthor={setAuthor} setUrl={setUrl} addBlog={addBlog}/> */}
+      <BlogForm addBlog={addBlog} setAdded={setAdded}/>
     </div>
   );
 };

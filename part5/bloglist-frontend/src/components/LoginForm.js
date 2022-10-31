@@ -1,12 +1,29 @@
-
+import { useState } from 'react'
 
 const LoginForm = (props) => {
     
-    const {login,setUsername,setPassword,username,password} = props
+    const {login} = props
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+
+    const loginMain = (e) => {
+      e.preventDefault();
+      
+      login({username,password})
+
+      //Reset the fields
+      setUsername("");
+      setPassword("");
+
+    }
+
+
     return (
     <>
       <h2>Log In to Your Application</h2>
-      <form onSubmit={login} className="flex flex-col w-3/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4">
+      <form onSubmit={loginMain} className="flex flex-col w-3/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4">
         <div className="p-1.5 flex gap-4 justify-center items-center">
           <h3>Username:</h3>
           <input className="p-1.5 w-full shadow appearance-none "

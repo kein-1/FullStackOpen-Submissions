@@ -16,7 +16,8 @@ const getTokenFrom = (request, response, next) => {
   //but NOT request.get("body") to see contents since body is not a header
   if ("authorization" in request.headers) {
     authorization = request.header("Authorization");
-    console.log(`This is ${authorization}`);
+    // console.log(`This is ${authorization}`);
+    
     if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
       //Since authorization is a string, it consists of "bearer <tokenname>".
       //Doing substring(7) means we return the substring starting from index 7, which makes sense

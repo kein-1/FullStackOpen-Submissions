@@ -1,5 +1,13 @@
 import axios from "axios";
 
+
+const blogsUrl = 'http://localhost:3001/api/blogs'
+
+// const loginUrl = "https://4rjbcc-3001.preview.csb.app/api/login";
+// const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+
+
+
 let token = null;
 
 const setToken = (newToken) => {
@@ -7,12 +15,12 @@ const setToken = (newToken) => {
   // console.log(`Token now is: ${token}`);
 };
 
-const getBlogs = async (url) => {
-  const item = await axios.get(url);
+const getBlogs = async () => {
+  const item = await axios.get(blogsUrl);
   return item.data;
 };
 
-const createBlog = async (url, obj) => {
+const createBlog = async (obj) => {
   //This is passsed as an object to the 3rd parameter of axios.post.
   //Third parameter is how we want to pass stuff like headers
   const config = {
@@ -23,19 +31,35 @@ const createBlog = async (url, obj) => {
   //Notice that the code after the post request will NOT run if there is an error here because axios throws an error. So even if we export this to be used in our main app, we can still catch errors there with a try/catch block becasue axios will throw an error. Then await will detect an error and generate an exception, stopping the rest of the code and jumping straight to the catch block
   console.log("Backend run");
   
-  const newBlog = await axios.post(url, obj, config);
+  const newBlog = await axios.post(blogsUrl, obj, config);
+  console.log("Will run if no error");
+
   console.log(newBlog);
   return newBlog.data
 };
 
-const deleteBlog = async (url) => {
+const deleteBlog = async (id) => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log(url);
-  const response = await axios.delete(url,config);
+  
+  const response = await axios.delete(`${blogsUrl}/${id}`,config);
   console.log(response)
   return response
 };
 
-export { getBlogs, setToken, createBlog, deleteBlog };
+
+const addLikes = async (id,data) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  
+  //Axios adds the data we want to PUT inside the "body" field of the request object.
+  //We can access this object using reuqest.body in the backend, just like a POSt request 
+  const response = await axios.put(`${blogsUrl}/${id}`, data, config);
+  console.log("IN ADD LIKES")
+  console.log(response)
+  return response.data
+};
+
+export { getBlogs, setToken, createBlog, deleteBlog, addLikes };

@@ -104,6 +104,31 @@ blogRouter.delete("/:id", userExtractor, async (request, response) => {
   }
 });
 
+
+blogRouter.put("/:id", userExtractor, async (request,response) => {
+
+  console.log("IN PUT")
+
+  const blogId = request.params.id
+  const newContent = request.body
+
+  if (!request.token) return response.status(400).json({error:"Missing token"})
+
+  //Uses the findbyIdAndUpdateMethod here to add hte likes. newContent is an object 
+  const blogObj = await Blog.findByIdAndUpdate(blogId,newContent,{new:true});
+  
+  console.log("*********")
+  console.log(blogObj)
+  console.log("*********")
+
+  console.log("updated blog post with a new like")
+  //Remember in axios in our frontend, we can access the returned response using the ".data" property 
+  return response.status(200).json(blogObj)
+
+})
+
+
+
 //Then we can export it out. In our main file, we need to specifiy an
 //app.use("BASE URL HERE", router we exported)
 module.exports = blogRouter;
