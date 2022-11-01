@@ -1,6 +1,5 @@
 import { useState } from "react";
 const Blog = (props) => {
-
   const {
     title,
     author,
@@ -22,24 +21,22 @@ const Blog = (props) => {
     };
     //Returned response object from our backend. I set it up so the response is the object from our database
     const response = await addLikes(id, updatedPost);
-    if (response.status === 200){
-      const updatedBlog = response.data
+    if (response.status === 200) {
+      const updatedBlog = response.data;
 
       //Update the current user blogs with the new likes by using map to create a new array of blogs. If the current element id is our old element, we replace it with the new one
-
       let newBlogs = userBlogs.map((element) => {
         if (element.id !== updatedBlog.id) return element;
         return updatedBlog;
       });
-      
-      localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
-      console.log("past local storage")
-      setUserBlogs(newBlogs);
 
+      localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
+      console.log("past local storage");
+      setUserBlogs(newBlogs);
     }
   };
 
-  //Delete the post
+  //Delete the post. Should add a try/catch block with status codes here
   const deleteBlogHandle = async () => {
     if (window.confirm(`Delete ${title} blog?`) === true) {
       await deleteBlog(id);
@@ -65,16 +62,16 @@ const Blog = (props) => {
   }
 
   return (
-    <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg space-y-1">
+    <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg">
       <h2 className="font-normal">{title}</h2>
       <h3 className="font-normal"> By: {author}</h3>
-      <p className="font-light">{content}</p>
+      <p className="font-light my-10">{content}</p>
       <h4> {likes} Likes</h4>
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-4">
         <button
           className="p-3 border-solid border-2 rounded-lg text-xs"
           onClick={addLikesHandle}
-        > 
+        >
           Add likes
         </button>
         <div className="space-x-4">

@@ -80,9 +80,12 @@ blogRouter.delete("/:id", userExtractor, async (request, response) => {
 
   if (!request.token) return response.json({ error: "Missing token" });
 
+  //Get both the user and the blog from our database
   const blogObj = await Blog.findById(blogId);
   const userObj = await User.findById(request.user);
 
+  //This is important. Need to check whether the blog's user id field
+  // (since each blog has a unique user associated to it) matches with the user making the request
   if (blogObj.user.toString() == request.user) {
     //Delete the blog in our blog collections
     const deletion = await Blog.deleteOne(blogObj);

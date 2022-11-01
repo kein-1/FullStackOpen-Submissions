@@ -1,9 +1,7 @@
 import axios from "axios";
 
-
-const blogsUrl = 'http://localhost:3001/api/blogs'
-
-// const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+// const blogsUrl = 'http://localhost:3001/api/blogs'
+const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
 
 let token = null;
 
@@ -30,30 +28,29 @@ const createBlog = async (obj) => {
 
   //Test what happens if you do the following code:
   //This will either return the newly made blog post OR the error response, which is an AxiosError
-  //The front end which uses "await" in front of this function will ALWAYS run and not detect any errors since there is no actual error that is thrown. The actual error is actually here but it still returns a result 
-  
-  //To be honest I prefer putting the try/catch block here and then in the main app that uses this function, I check if the returned status code is 200 (meaning it is good). I feel like this method makes a lot more sense and it is more intuitive 
-    try{
-      const newBlog = await axios.post(blogsUrl, obj, config);
-      console.log("Will run if no error");
-    
-      console.log(newBlog);
-      return newBlog  
-    }catch (error) {
-      console.log("BACKEND ERROR IN MAKING A NEW BLOG")
-      return error.response
-    }
-  
+  //The front end which uses "await" in front of this function will ALWAYS run and not detect any errors since there is no actual error that is thrown. The actual error is actually here but it still returns a result
+
+  //To be honest I prefer putting the try/catch block here and then in the main app that uses this function, I check if the returned status code is 200 (meaning it is good). I feel like this method makes a lot more sense and it is more intuitive
+  try {
+    const newBlog = await axios.post(blogsUrl, obj, config);
+    console.log("Will run if no error");
+
+    console.log(newBlog);
+    return newBlog;
+  } catch (error) {
+    console.log("BACKEND ERROR IN MAKING A NEW BLOG");
+    return error.response;
+  }
 
   //By not using a try/catch here, await will throw an error, if there is one, since axios is a promised based function. Then in the function that calls this one, we use the try/catch block since inside that function, we call this one. If there is an error, this function throws an exception inside the try block because the "await" in front of this function
   //Its kind of like if we ran axios inside the catch block itself without putting it in a wrapper function. We still would put a try/catch
 
-  //I guess we CAN do the try catch here and then in the front end we need to check the response. If it is a good response i.e it has the info we need, we run our code 
+  //I guess we CAN do the try catch here and then in the front end we need to check the response. If it is a good response i.e it has the info we need, we run our code
   // const newBlog = await axios.post(blogsUrl, obj, config);
   // console.log("Will run if no error");
   // console.log(newBlog);
-  // return newBlog.data   
-  
+  // return newBlog.data
+
   //The function using this one
   /*
      const register = async (userObject) => {
@@ -69,43 +66,38 @@ const createBlog = async (obj) => {
 
   }
   */
-
 };
 
 const deleteBlog = async (id) => {
   const config = {
     headers: { Authorization: token },
   };
-  try{
-    const response = await axios.delete(`${blogsUrl}/${id}`,config);
-    console.log(response)
-    return response
-  }catch(error) {
-    console.log("BACKEND ERROR IN MAKING A DELETING A BLOG")
-    return error.response
+  try {
+    const response = await axios.delete(`${blogsUrl}/${id}`, config);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log("BACKEND ERROR IN MAKING A DELETING A BLOG");
+    return error.response;
   }
-  
 };
 
-
-const addLikes = async (id,data) => {
+const addLikes = async (id, data) => {
   const config = {
     headers: { Authorization: token },
   };
-  
+
   //Axios adds the data we want to PUT inside the "body" field of the request object.
   //We can access this object using reuqest.body in the backend, just like a POSt request
-  try{
+  try {
     const response = await axios.put(`${blogsUrl}/${id}`, data, config);
-    console.log("IN ADD LIKES")
-    console.log(response)
-    return response
+    console.log("IN ADD LIKES");
+    console.log(response);
+    return response;
   } catch (error) {
-    console.log("BACKEND ERROR IN ADDING A LIKE")
-    return error.response
+    console.log("BACKEND ERROR IN ADDING A LIKE");
+    return error.response;
   }
-  
 };
-
 
 export { getBlogs, setToken, createBlog, deleteBlog, addLikes };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const BlogForm = (props) => {
   const { addBlog } = props;
@@ -9,6 +9,7 @@ const BlogForm = (props) => {
   const [url, setUrl] = useState("");
   const [content, setContent] = useState("");
 
+  const inputVal = useRef();
   //Inline styles must be passed as javascript objects
   const hideWhenVisible = {
     display: visible === false ? "inline-block" : "none",
@@ -22,6 +23,12 @@ const BlogForm = (props) => {
     setTitle("");
     setAuthor("");
     setUrl("");
+    setContent("");
+  };
+
+  const inputHanlder = () => {
+    console.log(inputVal.current);
+    inputVal.current.focus();
   };
 
   return (
@@ -53,6 +60,7 @@ const BlogForm = (props) => {
               value={title}
               placeholder="title"
               onChange={(e) => setTitle(e.target.value)}
+              ref={inputVal}
             />
           </div>
           <div className="flex gap-4 items-center">
@@ -93,7 +101,6 @@ const BlogForm = (props) => {
               type="submit"
               onClick={() => setVisible(false)}
             >
-              
               Add New Blog
             </button>
             <button
@@ -101,8 +108,15 @@ const BlogForm = (props) => {
               type="button"
               onClick={() => setVisible(false)}
             >
-              
               Cancel
+            </button>
+
+            <button
+              className="border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-full"
+              type="button"
+              onClick={inputHanlder}
+            >
+              Test useRef hook
             </button>
           </div>
         </form>

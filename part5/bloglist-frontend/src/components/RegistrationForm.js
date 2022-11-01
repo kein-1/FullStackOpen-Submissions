@@ -8,19 +8,22 @@ const RegistrationForm = (props) => {
   const [password, setPassword] = useState("");
 
   const registrationHandler = (e) => {
-    e.preventDefault()
-    register({username,name,password})
-  }
+    e.preventDefault();
+    register({ username, name, password });
+  };
 
   const formControlHandler = () => {
-    setLoginStatus(false)
-    setErrorMessage(false)
-  }
+    setLoginStatus(false);
+    setErrorMessage(false);
+  };
 
   return (
     <>
       <h2>Register a new account </h2>
-      <form onSubmit={registrationHandler} className="flex flex-col w-2/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4">
+      <form
+        onSubmit={registrationHandler}
+        className="flex flex-col w-2/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4"
+      >
         <div className="p-1.5 flex gap-4 justify-center items-center">
           <h4 className="w-3/12">Username </h4>
           <input
