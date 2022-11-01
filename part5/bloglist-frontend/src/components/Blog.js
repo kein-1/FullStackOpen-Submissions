@@ -20,9 +20,8 @@ const Blog = (props) => {
       likes: likes + 1,
     };
     //Returned response object from our backend. I set it up so the response is the object from our database
-    const response = await addLikes(id, updatedPost);
-    if (response.status === 200) {
-      const updatedBlog = response.data;
+    try {
+      const updatedBlog = await addLikes(id, updatedPost);
 
       //Update the current user blogs with the new likes by using map to create a new array of blogs. If the current element id is our old element, we replace it with the new one
       let newBlogs = userBlogs.map((element) => {
@@ -33,17 +32,25 @@ const Blog = (props) => {
       localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
       console.log("past local storage");
       setUserBlogs(newBlogs);
+    } catch (error) {
+      console.log(error.message);
+      console.log(error.response.data);
     }
   };
 
   //Delete the post. Should add a try/catch block with status codes here
   const deleteBlogHandle = async () => {
     if (window.confirm(`Delete ${title} blog?`) === true) {
-      await deleteBlog(id);
-      const newBlogs = userBlogs.filter((element) => element.id !== id);
-      console.log(newBlogs);
-      setUserBlogs(newBlogs);
-      localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
+      try {
+        await deleteBlog(id);
+        const newBlogs = userBlogs.filter((element) => element.id !== id);
+        console.log(newBlogs);
+        setUserBlogs(newBlogs);
+        localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
+      } catch (error) {
+        console.log(error.message);
+        console.log(error.response.data);
+      }
     }
   };
 

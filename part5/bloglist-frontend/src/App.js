@@ -57,45 +57,44 @@ const App = () => {
   const login = async (object) => {
     console.log("Log IN Button clicked");
 
-      //In using POST, Axios automatically adds that object field into the body of the request object
-      //In the response, this is based on what we defined in the server. So if the login is sucessful, I defined a response to consist of a json object that has the token, user, username, and userID
-      //If we console.log(user), we should see all this stuff
-      //Note in Axios, we can acess the response field using the .data parameter (shown in login.js)
-      //The axios api defines .data as the response returned by the server
+    //In using POST, Axios automatically adds that object field into the body of the request object
+    //In the response, this is based on what we defined in the server. So if the login is sucessful, I defined a response to consist of a json object that has the token, user, username, and userID
+    //If we console.log(user), we should see all this stuff
+    //Note in Axios, we can acess the response field using the .data parameter (shown in login.js)
+    //The axios api defines .data as the response returned by the server
 
-      //loginService is defined in the backend. It actually uses 2 parameters but we can omit 1 of them here since the other one is defined in the backend where this function is defined
-      const response = await loginService(object);
+    //loginService is defined in the backend. It actually uses 2 parameters but we can omit 1 of them here since the other one is defined in the backend where this function is defined
+    const response = await loginService(object);
 
-      if (response.status === 200) {
-        const user = response.data
-        //Save the response from the server to the user state
-        setUser(user);
-        setToken(user.token);
+    if (response.status === 200) {
+      const user = response.data;
+      //Save the response from the server to the user state
+      setUser(user);
+      setToken(user.token);
 
-        //After the user successfully logsin, we want to set the current user's blogs equal to
-        //a filtered list of blogs that belong to the user
-        const filteredBlogs = blogs.filter((element) => element.user === user.id);
-        setUserBlogs(filteredBlogs);
+      //After the user successfully logsin, we want to set the current user's blogs equal to
+      //a filtered list of blogs that belong to the user
+      const filteredBlogs = blogs.filter((element) => element.user === user.id);
+      setUserBlogs(filteredBlogs);
 
-        //Save the latest blog's id to this state. This is based on the user's current list of blogs
-        setLatestBlog(filteredBlogs.at(-1).id);
+      //Save the latest blog's id to this state. This is based on the user's current list of blogs
+      setLatestBlog(filteredBlogs.at(-1).id);
 
-        //Use localstorage to save the user's blog and info. Only strings can be saved to the browser
-        //So we use JSON.stringify
+      //Use localstorage to save the user's blog and info. Only strings can be saved to the browser
+      //So we use JSON.stringify
 
-        window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user));
-        window.localStorage.setItem("userBlogs", JSON.stringify(filteredBlogs));
+      window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user));
+      window.localStorage.setItem("userBlogs", JSON.stringify(filteredBlogs));
 
-        //DO NOT do the code below! userBlogs is updated AFTER this block of code is complete.
-        //The current value of userBlogs is still an [] array because after the user logs in,
-        //the userBlogs state is an empty state and it gets rendered here
+      //DO NOT do the code below! userBlogs is updated AFTER this block of code is complete.
+      //The current value of userBlogs is still an [] array because after the user logs in,
+      //the userBlogs state is an empty state and it gets rendered here
 
-        // window.localStorage.setItem("userBlogs", JSON.stringify(userBlogs));
-      }
-      else  {
+      // window.localStorage.setItem("userBlogs", JSON.stringify(userBlogs));
+    } else {
       console.log("Error in logging in");
-      setErrorMessage(response.data)
-      setShowError(true)
+      setErrorMessage(response.data);
+      setShowError(true);
     }
   };
 
@@ -104,72 +103,68 @@ const App = () => {
     setUser(null);
   };
 
-  //Refactored the try/catch block inside the registrationService function. The function calls axios in it. 
-  //In there, we return a response from the server. The response is a schema that axios provides and the response schema is different for a successful axios request or an error (meaning the fields in the successful returned object are different). This depends on the status code returned. 
-  //This is why in our registrationService code, we returned different things but both are response objects from the server 
+  //Refactored the try/catch block inside the registrationService function. The function calls axios in it.
+  //In there, we return a response from the server. The response is a schema that axios provides and the response schema is different for a successful axios request or an error (meaning the fields in the successful returned object are different). This depends on the status code returned.
+  //This is why in our registrationService code, we returned different things but both are response objects from the server
   const register = async (userObject) => {
-      const response = await registrationService(userObject)
-      if (response.status === 200){
-        const registered_user = response.data
-        console.log("user was registered")
-        setLoginStatus(false)
-        console.log(registered_user)
-      }
-      else {
-        console.log("bad registration")
-        setShowError(true)
-        setErrorMessage(response.data)
+    const response = await registrationService(userObject);
+    if (response.status === 200) {
+      const registered_user = response.data;
+      console.log("user was registered");
+      setLoginStatus(false);
+      console.log(registered_user);
+    } else {
+      console.log("bad registration");
+      setShowError(true);
+      setErrorMessage(response.data);
     }
-  }
+  };
 
   //Refactored all this relevant code to the Blog Form component. Now we are only passing in this function and a few other parameters to the Blog Form Component. All the state related to adding a blog is now defined in the component itself
   const addBlog = async (blogObjectParameters) => {
-    
-      let response = await createBlog(blogObjectParameters);
-      if (response.status === 200){
-        response = response.data
+    try {
+      //Update the state for the latest userBlogs by creating a new array of blogs
+      let new_blog = await createBlog(blogObjectParameters);
+      console.log(new_blog);
+      const updatedUserBlogs = [...userBlogs, new_blog];
+      setUserBlogs(updatedUserBlogs);
+      setLatestBlog(new_blog.id);
 
-        //Update the state for the latest userBlogs by creating a new array of blogs
-        const updatedUserBlogs = [...userBlogs, response];
-        setUserBlogs(updatedUserBlogs);
-        setLatestBlog(response.id);
-
-        //After adding a blog, we need to update the local storage so when we refresh, it saves
-        window.localStorage.setItem(
-          "userBlogs",
-          JSON.stringify(updatedUserBlogs)
-        );
-        setAdded(true);
-    }else {
-      console.log("Front end error in making a blog!")
-      console.log(response.data)
+      //After adding a blog, we need to update the local storage so when we refresh, it saves
+      window.localStorage.setItem(
+        "userBlogs",
+        JSON.stringify(updatedUserBlogs)
+      );
+      setAdded(true);
+    } catch (error) {
+      console.log("Error!");
+      console.log(error.message);
+      console.log(error.response.data);
     }
   };
 
   const deleteLatest = async () => {
-      
-      const response = await deleteBlog(latestBlog);
-      if (response.status === 204){
-        console.log(`in resposne frontend ${response}`);
-        //This means successful deletion
-        if (response.status === 204) {
-          const updatedUserBlogs = userBlogs.filter(
-            (element) => element.id !== latestBlog
-          );
+    const response = await deleteBlog(latestBlog);
+    if (response.status === 204) {
+      console.log(`in resposne frontend ${response}`);
+      //This means successful deletion
+      if (response.status === 204) {
+        const updatedUserBlogs = userBlogs.filter(
+          (element) => element.id !== latestBlog
+        );
 
-          setUserBlogs(updatedUserBlogs);
-          setLatestBlog(updatedUserBlogs.at(-1).id);
+        setUserBlogs(updatedUserBlogs);
+        setLatestBlog(updatedUserBlogs.at(-1).id);
 
-          //After deleting a blog, we need to update the local storage so when we refresh, it saves
-          window.localStorage.setItem(
-            "userBlogs",
-            JSON.stringify(updatedUserBlogs)
-          );
-        }  
+        //After deleting a blog, we need to update the local storage so when we refresh, it saves
+        window.localStorage.setItem(
+          "userBlogs",
+          JSON.stringify(updatedUserBlogs)
+        );
       }
-      else {
-        console.log("DELETION ERROR");
-        console.log(response.data);
+    } else {
+      console.log("DELETION ERROR");
+      console.log(response.data);
     }
   };
 
@@ -178,17 +173,21 @@ const App = () => {
   if (user === null) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
-        {showError === true && <ErrorNotification errorMessage={errorMessage}/>}
+        {showError === true && (
+          <ErrorNotification errorMessage={errorMessage} />
+        )}
         {loginStatus === false ? (
-          <LoginForm 
-          login={login} 
-          setLoginStatus={setLoginStatus} 
-          setErrorMessage={setErrorMessage}/>
+          <LoginForm
+            login={login}
+            setLoginStatus={setLoginStatus}
+            setErrorMessage={setErrorMessage}
+          />
         ) : (
-          <RegistrationForm 
-          register={register} 
-          setLoginStatus={setLoginStatus} 
-          setErrorMessage={setErrorMessage} />
+          <RegistrationForm
+            register={register}
+            setLoginStatus={setLoginStatus}
+            setErrorMessage={setErrorMessage}
+          />
         )}
       </div>
     );
