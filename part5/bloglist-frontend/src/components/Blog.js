@@ -1,6 +1,5 @@
 import { useState } from "react";
 const Blog = (props) => {
-  console.log("in a blog post");
 
   const {
     title,
@@ -22,17 +21,22 @@ const Blog = (props) => {
       likes: likes + 1,
     };
     //Returned response object from our backend. I set it up so the response is the object from our database
-    const updatedBlog = await addLikes(id, updatedPost);
-    console.log(userBlogs);
+    const response = await addLikes(id, updatedPost);
+    if (response.status === 200){
+      const updatedBlog = response.data
 
-    //Update the current user blogs with the new likes by using map to create a new array of blogs. If the current element id is our old element, we replace it with the new one
-    let newBlogs = userBlogs.map((element) => {
-      if (element.id !== id) return element;
-      return updatedBlog;
-    });
-    console.log(newBlogs);
-    setUserBlogs(newBlogs);
-    localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
+      //Update the current user blogs with the new likes by using map to create a new array of blogs. If the current element id is our old element, we replace it with the new one
+
+      let newBlogs = userBlogs.map((element) => {
+        if (element.id !== updatedBlog.id) return element;
+        return updatedBlog;
+      });
+      
+      localStorage.setItem("userBlogs", JSON.stringify(newBlogs));
+      console.log("past local storage")
+      setUserBlogs(newBlogs);
+
+    }
   };
 
   //Delete the post

@@ -1,19 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap");
 
+
+
+/* 
+By default tailwind injects a set of base styling into our app. This is stuff like a default
+font size, default color, default font color, lists unstyled etc 
+*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
 /* 
-
 Here we can apply universal styles to each tag. It is a good idea to use the @apply for each 
-
 */
-
-* {
-  box-sizing: border-box;
-}
 
 body {
   @apply h-screen;
@@ -45,5 +45,8 @@ I just defined text and text size here so I don't need to define these classes i
   }
   p {
     @apply font-roboto text-base;
+  }
+  * {
+    @apply box-border;
   }
 }

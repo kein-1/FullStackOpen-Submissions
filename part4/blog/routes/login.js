@@ -33,7 +33,7 @@ loginRouter.post("/", async (request, response) => {
   //This is how this is all signed. We pass in whatever waant to the first parameter. Here, we pass in both the username and the id we retrieved from the database, and then also a date object
   const token = jsonwebtoken.sign(userForToken, process.env.SECRET);
   response
-    .status(220)
+    .status(200)
     .json({
       token,
       username: person[0].username,

@@ -1,7 +1,8 @@
 const ErrorNotification = (props) => {
-    return (
-      <h3>Wrong username and password!</h3>
-    )
-  }
+
+  const { errorMessage } = props  
+  return <h3 className="text-red-500">{errorMessage}</h3>
+    
+}
 
 export default ErrorNotification
