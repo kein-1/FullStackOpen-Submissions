@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const blogsUrl = 'http://localhost:3001/api/blogs'
-const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+const blogsUrl = "http://localhost:3001/api/blogs";
+// const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
 
 let token = null;
 
@@ -44,12 +44,11 @@ const addLikes = async (id, data) => {
 
   //Axios adds the data we want to PUT inside the "body" field of the request object.
   //We can access this object using reuqest.body in the backend, just like a POSt request
-  
+
   const response = await axios.put(`${blogsUrl}/${id}`, data, config);
   console.log("IN ADD LIKES");
   console.log(response);
   return response.data;
-  
 };
 
 export { getBlogs, setToken, createBlog, deleteBlog, addLikes };
