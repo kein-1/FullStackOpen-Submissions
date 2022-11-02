@@ -64,10 +64,9 @@ const App = () => {
     //The axios api defines .data as the response returned by the server
 
     //loginService is defined in the backend. It actually uses 2 parameters but we can omit 1 of them here since the other one is defined in the backend where this function is defined
-    const response = await loginService(object);
-
-    if (response.status === 200) {
-      const user = response.data;
+    try{
+      const user = await loginService(object);
+      console.log(user)
       //Save the response from the server to the user state
       setUser(user);
       setToken(user.token);
@@ -91,11 +90,14 @@ const App = () => {
       //the userBlogs state is an empty state and it gets rendered here
 
       // window.localStorage.setItem("userBlogs", JSON.stringify(userBlogs));
-    } else {
-      console.log("Error in logging in");
-      setErrorMessage(response.data);
+    }catch(error){
+      console.log(error.message)
+      console.log(error.response.data)
+      setErrorMessage(error.response.data);
       setShowError(true);
     }
+      
+      
   };
 
   const logout = () => {
@@ -107,17 +109,19 @@ const App = () => {
   //In there, we return a response from the server. The response is a schema that axios provides and the response schema is different for a successful axios request or an error (meaning the fields in the successful returned object are different). This depends on the status code returned.
   //This is why in our registrationService code, we returned different things but both are response objects from the server
   const register = async (userObject) => {
-    const response = await registrationService(userObject);
-    if (response.status === 200) {
-      const registered_user = response.data;
+    try{
+      const registered_user = await registrationService(userObject);
       console.log("user was registered");
       setLoginStatus(false);
       console.log(registered_user);
-    } else {
-      console.log("bad registration");
-      setShowError(true);
-      setErrorMessage(response.data);
     }
+      catch(error){
+        console.log("bad registration");
+        console.log(error.message);
+        console.log(error.response.data);
+        setShowError(true);
+        setErrorMessage(error.response.data);
+      }
   };
 
   //Refactored all this relevant code to the Blog Form component. Now we are only passing in this function and a few other parameters to the Blog Form Component. All the state related to adding a blog is now defined in the component itself
