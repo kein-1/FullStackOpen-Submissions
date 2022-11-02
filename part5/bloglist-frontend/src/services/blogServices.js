@@ -53,7 +53,6 @@ const addLikes = async (id, data) => {
 
 export { getBlogs, setToken, createBlog, deleteBlog, addLikes };
 
-
 /*
 
 Why don't we use trycatch here? Because an error inside an async function will return a promise that is rejected. So if axios returns an error, which is wrapped in a promise, we can await that promise

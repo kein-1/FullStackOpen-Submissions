@@ -1,37 +1,33 @@
-const bcrypt = require('bcrypt')
-const express = require('express')
-const usersRouter = express.Router()
-const User = require('../models/user')
-const mongoose = require('mongoose')
+const bcrypt = require("bcrypt");
+const express = require("express");
+const usersRouter = express.Router();
+const User = require("../models/user");
+const mongoose = require("mongoose");
 
+usersRouter.get("/", async (request, response) => {
+  // const all_notes = await User.find({}).populate("blogs")
+  const all_notes = await User.find({});
 
+  console.log(all_notes);
+  response.json(all_notes);
+});
 
+usersRouter.post("/", async (request, response) => {
+  const { username, name, password } = request.body;
 
-usersRouter.get('/', async (request,response) => {
+  //Save the password as a HASH in our database
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    // const all_notes = await User.find({}).populate("blogs")
-    const all_notes = await User.find({})
+  const user = new User({
+    username,
+    name,
+    passwordHash,
+  });
 
-	console.log(all_notes)
-    response.json(all_notes)
-})
+  const savedUser = await user.save();
 
-usersRouter.post('/', async (request, response) => {
-	const { username, name, password} = request.body
+  response.status(201).json(savedUser);
+});
 
-	//Save the password as a HASH in our database
-	const saltRounds = 10
-	const passwordHash = await bcrypt.hash(password, saltRounds)
-
-	const user = new User({
-		username,
-		name,
-		passwordHash,
-	})
-
-	const savedUser = await user.save()
-
-	response.status(201).json(savedUser)
-})
-
-module.exports = usersRouter
+module.exports = usersRouter;

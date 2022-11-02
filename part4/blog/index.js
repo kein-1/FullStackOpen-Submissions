@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 //This is a npm library that eliminates the need to use try/catch. Any errors will be automatically passed to the error handling funciton we setup
 require("express-async-errors");
 const { PORT, MONGODB_URL } = require("./utils/config");
-const Blog = require("./models/blog");
 const blogsRouter = require("./routes/blog");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
@@ -19,7 +18,7 @@ mongoose.connect(MONGODB_URL, () => console.log("CONNECTED"));
 
 //Formats your content so it looks better
 app.set("json spaces", 2);
-    
+
 app.use(express.json());
 app.use(express.static("build"));
 app.use(cors());

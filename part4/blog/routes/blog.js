@@ -3,8 +3,6 @@ const express = require("express");
 const blogRouter = express.Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
-const mongoose = require("mongoose");
-const jsonwebtoken = require("jsonwebtoken");
 const userExtractor = require("../utils/userExtractor");
 
 //Then we define the rest of our routes here. Good thing about router is we can cut off a lot of the base routes. So since we know our main route is say http://localhost:3001/api/blogs, we can make this the base url in the main file (see comment in export below) and then use the subsequent routes here

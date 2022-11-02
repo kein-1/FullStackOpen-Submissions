@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
     "start": "node index.js",
     "devWatch": "nodemon index.js",
-    "gitAdd": "git add . && git commit -m 'Updated part4' && git push"
+    "gitAdd": "git add . && git commit -m 'Updated part4' && git push",
+    "lint": "eslint .",
+    "test": "jest --verbose"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,8 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "eslint": "^8.26.0",
+    "eslint-plugin-react": "^7.31.10",
     "jest": "^29.2.0",
     "nodemon": "^2.0.20",
     "supertest": "^6.3.0"
