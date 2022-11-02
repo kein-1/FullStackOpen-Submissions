@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const blogsUrl = "http://localhost:3001/api/blogs";
-const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+const blogsUrl = "http://localhost:3001/api/blogs";
+// const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
 
 let token = null;
 
