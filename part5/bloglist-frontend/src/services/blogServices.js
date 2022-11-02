@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const blogsUrl = "http://localhost:3001/api/blogs";
-// const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
+// const blogsUrl = "http://localhost:3001/api/blogs";
+const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
 
 let token = null;
 
@@ -52,3 +52,16 @@ const addLikes = async (id, data) => {
 };
 
 export { getBlogs, setToken, createBlog, deleteBlog, addLikes };
+
+
+/*
+
+Why don't we use trycatch here? Because an error inside an async function will return a promise that is rejected. So if axios returns an error, which is wrapped in a promise, we can await that promise
+This will then throw an error inside oru function
+any error inside an async function will cause that promise to reject 
+
+
+
+
+
+*/
