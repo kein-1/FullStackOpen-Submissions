@@ -35,3 +35,5 @@ app.use("/api/registration", registrationRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Running on ${PORT}`));
+
+module.exports = app;

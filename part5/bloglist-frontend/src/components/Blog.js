@@ -58,6 +58,7 @@ const Blog = (props) => {
     return (
       <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg space-y-1">
         <h2 className="font-normal">{title}</h2>
+        <h3 className="font-normal">{author}</h3>
         <button
           className="p-3 border-solid border-2 rounded-lg text-xs"
           onClick={() => setShowAll(true)}

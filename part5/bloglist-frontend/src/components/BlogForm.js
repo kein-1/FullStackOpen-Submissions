@@ -26,11 +26,6 @@ const BlogForm = (props) => {
     setContent("");
   };
 
-  const inputHanlder = () => {
-    console.log(inputVal.current);
-    inputVal.current.focus();
-  };
-
   return (
     <>
       <div
@@ -109,14 +104,6 @@ const BlogForm = (props) => {
               onClick={() => setVisible(false)}
             >
               Cancel
-            </button>
-
-            <button
-              className="border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-full"
-              type="button"
-              onClick={inputHanlder}
-            >
-              Test useRef hook
             </button>
           </div>
         </form>
