@@ -1,4 +1,4 @@
-const { dummy, totalLikes, favoriteBlog, mostBlogs } = require('../utils/list_helper.js')
+const { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes } = require('../utils/list_helper.js')
 
 
 
@@ -45,38 +45,50 @@ const inputBlogs = [
     },
     ];
     
-// test('this method should return 1', () => {
-    
-//     const blogs = []
-//     const result = dummy(blogs)
-//     expect(result).toBe(1)
-// })
+test('this method should return 1', () => {
 
-// describe("This is total likes test", () => {
-//     test('The total likes should be 15', () => {
-//         const results = totalLikes(inputBlogs)
-//         expect(results).toBe(15)
-//     })
-// })
+  const blogs = []
+  const result = dummy(blogs)
+  expect(result).toBe(1)
+})
 
-// describe("This is the favorite blogs", () => {
-//     test("the favorite blog with the most likes should be the 2nd to last blog", () => {
-//         const favBlog = favoriteBlog(inputBlogs)
-//         expect(favBlog).toEqual(inputBlogs[1])
-//     })
-// })
+describe("This is total likes test", () => {
+  test('The total likes should be 15', () => {
+      const results = totalLikes(inputBlogs)
+      expect(results).toBe(15)
+  })
+})
 
-
+describe("This is the favorite blogs", () => {
+  test("the favorite blog with the most likes should be the 2nd to last blog", () => {
+      const favBlog = favoriteBlog(inputBlogs)
+      expect(favBlog).toEqual(inputBlogs[1])
+  })
+})
 
 describe("This is the author with the most blogs test", () => {
-    const answer = {
-        author: "Robert C. Martin",
-        blogs: 3
-    }
+  const answer = {
+      author: "Robert C. Martin",
+      blogs: 3
+  }
     
-    test("This is the author with the most blogs", () => {
-        const author = mostBlogs(inputBlogs)
-        expect(author).toEqual(answer)
-    })
-    
+  test("This is the author with the most blogs", () => {
+      const author = mostBlogs(inputBlogs)
+      expect(author).toEqual(answer)
+  })
+})
+
+describe("This is the author with the most likes test", () => {
+
+  const answer = {
+    author: "Robert C. Martin",
+    likes: 8
+  }
+
+  test("The author should be Robert C.Martin", () => {
+    const results = mostLikes(inputBlogs)
+    expect(results).toEqual(answer)
+  })
+  
+
 })

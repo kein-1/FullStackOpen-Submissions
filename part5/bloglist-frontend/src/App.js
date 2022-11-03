@@ -114,14 +114,13 @@ const App = () => {
       console.log("user was registered");
       setLoginStatus(false);
       console.log(registered_user);
+    } catch(error){
+      console.log("bad registration");
+      console.log(error.message);
+      console.log(error.response.data);
+      setShowError(true);
+      setErrorMessage(error.response.data);
     }
-      catch(error){
-        console.log("bad registration");
-        console.log(error.message);
-        console.log(error.response.data);
-        setShowError(true);
-        setErrorMessage(error.response.data);
-      }
   };
 
   //Refactored all this relevant code to the Blog Form component. Now we are only passing in this function and a few other parameters to the Blog Form Component. All the state related to adding a blog is now defined in the component itself
