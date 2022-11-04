@@ -97,7 +97,7 @@ test("Testing blog form", async () => {
 
   //This is for testing to see what properties the addBlog.mock has. Basically each function has these properties and we can test what they are and their values
   //The .calls property is the input values it is called with, which is what we need here 
-   
+
   //expect(addBlog.mock).toBe("blog title")
 
   expect(addBlog.mock.calls[0][0].title).toBe("blog title")
@@ -106,7 +106,9 @@ test("Testing blog form", async () => {
   expect(addBlog.mock.calls[0][0].content).toBe("blog content")
 
   expect(addBlogButton).toBeDefined()
-  // expect(addBlog.mock.calls).toHaveLength(1);
-  // expect(screen.getByPlaceholderText("title")).toHaveValue("blog title")  
+  
+  //Curious why the value property is not defined.. per the docs, this is the method they recommend to test values inside an input field 
+  
+  // expect(inputTitle.value).toHaveValue("blog title")  
   // expect(addBlog.mock.calls[0][0].content).toBe("blog title");
 });
