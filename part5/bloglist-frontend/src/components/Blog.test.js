@@ -68,30 +68,45 @@ test("Testing blog form", async () => {
   // parameters to addBlog here
   const addBlog = jest.fn();
 
-  //This sets up a session for us to use and test
+  //This simulates a user 
   const user = userEvent.setup();
 
   render(<BlogForm addBlog={addBlog} />);
   //Get the Create New Blog button that when we click, it shows the blog form
   const newBlog = screen.getByText("Create a New Blog");
+
+  //Trying to teset if the button was clicked. We can't test internal functions like this but what we can do is we know that stuff is supposed to show after this button is clicked. So we can test for those things, such as the form we have
   await user.click(newBlog);
+  const addBlogButton = screen.getByText("Add New Blog");
 
   //Now we get the add new blog button. As defined in our BlogForm component, this button
   //Submits the form when clicked. On submission, the form runs the wrapper function which
   //calls the addBlog function
-  const addBlogButton = screen.getByText("Add New Blog");
 
   const inputTitle = screen.getByPlaceholderText("title");
   const inputAuthor = screen.getByPlaceholderText("author");
   const inputUrl = screen.getByPlaceholderText("url");
   const inputContent = screen.getByPlaceholderText("Add your thoughts..");
 
-  await user.type(inputTitle, "blog title");
-  await user.type(inputAuthor, "blog author");
-  await user.type(inputUrl, "blog url");
-  await user.type(inputContent, "blog content");
-  await user.click(addBlogButton);
 
-  expect(newBlog.mock.calls).toHaveLength(1);
-  expect(newBlog.mock.calls[0][0].content).toBe("blog title");
+  await userEvent.type(inputTitle, "blog title");
+  await userEvent.type(inputAuthor, "blog author");
+  await userEvent.type(inputUrl, "blog url");
+  await userEvent.type(inputContent, "blog content");
+  await userEvent.click(addBlogButton);
+
+  //This is for testing to see what properties the addBlog.mock has. Basically each function has these properties and we can test what they are and their values
+  //The .calls property is the input values it is called with, which is what we need here 
+   
+  //expect(addBlog.mock).toBe("blog title")
+
+  expect(addBlog.mock.calls[0][0].title).toBe("blog title")
+  expect(addBlog.mock.calls[0][0].author).toBe("blog author")
+  expect(addBlog.mock.calls[0][0].url).toBe("blog url")
+  expect(addBlog.mock.calls[0][0].content).toBe("blog content")
+
+  expect(addBlogButton).toBeDefined()
+  // expect(addBlog.mock.calls).toHaveLength(1);
+  // expect(screen.getByPlaceholderText("title")).toHaveValue("blog title")  
+  // expect(addBlog.mock.calls[0][0].content).toBe("blog title");
 });

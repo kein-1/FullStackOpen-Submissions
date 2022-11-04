@@ -55,7 +55,6 @@ const BlogForm = (props) => {
               value={title}
               placeholder="title"
               onChange={(e) => setTitle(e.target.value)}
-              ref={inputVal}
             />
           </div>
           <div className="flex gap-4 items-center">
