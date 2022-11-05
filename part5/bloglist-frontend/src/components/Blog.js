@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faTrashAlt, faArrowAltCircleUp, faArrowAltCircleDown } from '@fortawesome/fontawesome-free-regular'
+import { HiArrowDown, HiOutlineHeart, HiOutlineTrash, HiArrowUp, HiLogout } from "react-icons/hi";
+
 
 const Blog = (props) => {
   const {
@@ -60,11 +60,11 @@ const Blog = (props) => {
 
   if (!showAll) {
     return (
-      <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg ">
+      <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 rounded-lg ">
         <div className="flex justify-between">
           <h2 className="font-normal mb-1">{title}</h2>
-          <button className="text-sm" onClick={() => setShowAll(true)}>
-            <FontAwesomeIcon icon={faArrowAltCircleDown} /> Show More
+          <button className="text-base flex items-center gap-1" onClick={() => setShowAll(true)}>
+            <HiArrowDown/> Show More
           </button>  
         </div>
         <h3 className="font-normal mb-3">By : {author}</h3>
@@ -73,33 +73,34 @@ const Blog = (props) => {
   }
 
   return (
-    <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg">
+    <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 rounded-lg">
       <div className="flex justify-between">
-        <h2 className="font-normal">{title}</h2>
+        <h2 className="font-normal ">{title}</h2>
         <button
-          className="text-sm"
+          className="text-base flex items-center gap-2"
           onClick={() => setShowAll(false)}
           >
-            <FontAwesomeIcon icon={faArrowAltCircleUp} /> Hide
+            <HiArrowUp/> Hide
           </button>
+          
       </div>
-      <h3 className="font-normal"> By: {author}</h3>
+      <h3 className="font-normal border-b-2 border-zinc-300 pb-2"> By: {author}</h3>
       <p className="font-light my-10">{content}</p>
-      <h4> {likes} Likes</h4>
-      <div className="flex justify-between mt-4">
+      <h4 > {likes} Likes</h4>
+      <div className="flex justify-between mt-4 border-t-2 border-zinc-300 pt-2">
         <button
-          className="text-sm"
+          className="text-sm flex items-center gap-1 " 
           onClick={addLikesHandle}
         >
-          <FontAwesomeIcon icon={faHeart} /> Like
+            <HiOutlineHeart/> Like
         </button>
         <div className="space-x-4">
         
           <button
-            className="text-sm"
+            className="text-sm flex items-center gap-1 "
             onClick={deleteBlogHandle}
           >
-          <FontAwesomeIcon icon={faTrashAlt} /> Delete Post
+          <HiOutlineTrash/> Delete Post
           </button>
         </div>
       </div>

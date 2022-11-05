@@ -9,7 +9,6 @@ const BlogForm = (props) => {
   const [url, setUrl] = useState("");
   const [content, setContent] = useState("");
 
-  const inputVal = useRef();
   //Inline styles must be passed as javascript objects
   const hideWhenVisible = {
     display: visible === false ? "inline-block" : "none",
