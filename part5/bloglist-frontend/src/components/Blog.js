@@ -1,4 +1,8 @@
 import { useState } from "react";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart, faTrashAlt, faArrowAltCircleUp, faArrowAltCircleDown } from '@fortawesome/fontawesome-free-regular'
+
 const Blog = (props) => {
   const {
     title,
@@ -56,44 +60,46 @@ const Blog = (props) => {
 
   if (!showAll) {
     return (
-      <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg space-y-1">
-        <h2 className="font-normal">{title}</h2>
-        <h3 className="font-normal">{author}</h3>
-        <button
-          className="p-3 border-solid border-2 rounded-lg text-xs"
-          onClick={() => setShowAll(true)}
-        >
-          More info
-        </button>
+      <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg ">
+        <div className="flex justify-between">
+          <h2 className="font-normal mb-1">{title}</h2>
+          <button className="text-sm" onClick={() => setShowAll(true)}>
+            <FontAwesomeIcon icon={faArrowAltCircleDown} /> Show More
+          </button>  
+        </div>
+        <h3 className="font-normal mb-3">By : {author}</h3>
       </li>
     );
   }
 
   return (
     <li className="border-solid shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-4 rounded-lg">
-      <h2 className="font-normal">{title}</h2>
+      <div className="flex justify-between">
+        <h2 className="font-normal">{title}</h2>
+        <button
+          className="text-sm"
+          onClick={() => setShowAll(false)}
+          >
+            <FontAwesomeIcon icon={faArrowAltCircleUp} /> Hide
+          </button>
+      </div>
       <h3 className="font-normal"> By: {author}</h3>
       <p className="font-light my-10">{content}</p>
       <h4> {likes} Likes</h4>
       <div className="flex justify-between mt-4">
         <button
-          className="p-3 border-solid border-2 rounded-lg text-xs"
+          className="text-sm"
           onClick={addLikesHandle}
         >
-          Add likes
+          <FontAwesomeIcon icon={faHeart} /> Like
         </button>
         <div className="space-x-4">
+        
           <button
-            className="p-3 border-solid border-2 rounded-lg text-xs"
-            onClick={() => setShowAll(false)}
-          >
-            Hide
-          </button>
-          <button
-            className="p-3 border-solid border-2 rounded-lg text-xs"
+            className="text-sm"
             onClick={deleteBlogHandle}
           >
-            Delete Blog Post
+          <FontAwesomeIcon icon={faTrashAlt} /> Delete Post
           </button>
         </div>
       </div>
