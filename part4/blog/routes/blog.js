@@ -62,7 +62,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
     const new_post = await blog_post.save();
 
     creator.blogs = creator.blogs.concat(new_post._id);
-    // await creator.save();
+    await creator.save();
 
     console.log(blog_post);
     console.log("saved!");
