@@ -25,7 +25,7 @@ const LoginForm = (props) => {
       <h2>Log In to Your Blogs!</h2>
       <form
         onSubmit={loginMain}
-        className="flex flex-col w-2/5 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4"
+        className="flex flex-col w-1/3 border-solid border-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-6 gap-4"
       >
         <div className="p-1.5 flex gap-4 justify-center items-center">
           <h4 className="w-3/12">Username:</h4>
@@ -36,7 +36,7 @@ const LoginForm = (props) => {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div className="p-1.5 flex gap-4  justify-center items-center">
+        <div className="p-1.5 flex gap-4 justify-center items-center">
           <h4 className="w-3/12">Password:</h4>
           <input
             className="p-1.5 w-full shadow appearance-none hover:outline-blue-400"

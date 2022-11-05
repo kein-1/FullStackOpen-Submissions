@@ -27,4 +27,9 @@ Utilized the following new packages:
 - jwt - json webtoken utilized for authorization 
      
 #### Part 5: React testing, front-end integration
-Built the frontend for our blog app. I decided to incorporate Tailwind CSS for this project as an opportunity to both learn and use Tailwind to style my project 
+Built the frontend for our blog app. I decided to incorporate Tailwind CSS for this project as an opportunity to both learn and use Tailwind to style my project   
+
+- Deployed the full blog project on to Render.com. I deployed both the front-end, which is this part, and the backend, which is from part 4. Also deployed my .env variables to render  
+
+https://blog-mv4w.onrender.com/
+[Blog site](https://blog-mv4w.onrender.com/)
