@@ -1,16 +1,13 @@
 import axios from "axios";
 
-
-
 // const blogsUrl = "http://localhost:3001/api/blogs";
 // const blogsUrl = "https://4rjbcc-3001.preview.csb.app/api/blogs";
 
-//THIS IS NOT THE RIGHT WAY OF DOING IT. I SHOULD SETUP A PRODUCTION AND DEVELOPMENT 
-//ENVIRONMENTAL VARIABLES AND IT WILL RUN SEPARATE URLS BASED ON WHETHER OUR CODE IS 
-//IN PRODUCTION OR DEVELOPMENT!!! LOOK INTO THIS !! 
+//THIS IS NOT THE RIGHT WAY OF DOING IT. I SHOULD SETUP A PRODUCTION AND DEVELOPMENT
+//ENVIRONMENTAL VARIABLES AND IT WILL RUN SEPARATE URLS BASED ON WHETHER OUR CODE IS
+//IN PRODUCTION OR DEVELOPMENT!!! LOOK INTO THIS !!
 //I WAS RUNNING INTO ERRORS WHEN I HOSTED BY SITE WITHOUT DOING THIS!!!
-const blogsUrl = "https://blog-backend-9a3n.onrender.com/api/blogs"
-
+const blogsUrl = "https://blog-backend-9a3n.onrender.com/api/blogs";
 
 let token = null;
 
