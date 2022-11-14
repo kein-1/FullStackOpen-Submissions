@@ -40,7 +40,6 @@ const errorHandler = (error, response) => {
       .json({ errorType: error.name, error: error.message });
   }
 
-  console.log(error);
   return response.status(500).send("Something broke!");
 };
 
