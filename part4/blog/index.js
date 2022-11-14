@@ -21,9 +21,9 @@ mongoose.connect(url, () => console.log("CONNECTED"));
 //Formats your content so it looks better
 app.set("json spaces", 2);
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static("build"));
-app.use(cors());
 app.use(tokenExtractor);
 
 //Saying anything that starts with /api/blogs will use the router stuff we imported and basically add all those different routes to the end of this type of route

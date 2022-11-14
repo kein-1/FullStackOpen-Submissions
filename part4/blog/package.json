@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node index.js",
-    "devWatch": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "node index.js",
+    "devWatch": "nodemon index.js",
     "gitAdd": "git add . && git commit -m 'Updated part4' && git push",
     "lint": "eslint .",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"

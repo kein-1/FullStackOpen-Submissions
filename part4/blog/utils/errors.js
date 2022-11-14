@@ -1,7 +1,7 @@
 //Express will recognize this as the error handling middleware because it has 4 arguments
 const errorHandler = (error, response) => {
   console.error("WE ARE IN THE ERRORS");
-  console.log(error.message);
+  console.log(`Errors are: ${error}`);
   if (error.name === "CastError") {
     console.log(error);
     return response.status(404).json({ error: "no id exists.." });
