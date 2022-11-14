@@ -35,18 +35,15 @@ blogRouter.post("/", userExtractor, async (request, response) => {
   //We passed the handling to a middleware function. The function added the "token" property to the request object
   //We also passed extracting the user into a middleware defined here. That middleware will add a "request.user" attribute to the request object before it reaches this route's logic
 
+  // JUST REALIZED MY CODE ISN'T ACTUALLY VERIFYING THE USER. MY MIDDLEWARE DOES IT BUT I NEED TO VERIFY IF IT WORKED HERE 
   const token = request.token;
   const user = request.user;
-  console.log("*******");
-  // console.log(request);
-  // console.log(request.headers);
-  // console.log(token);
-  // console.log(user);
-  // console.log(content);
+  
+  //User should have been extracted correctly in the userExtractor middleware which utilizes jwtverify
+  if (!user) return response.status(401).json({error: "invalid token or missing token"})
 
   const creator = await User.findById(user);
   console.log(creator);
-  console.log('*****');
 
   if (content.title && content.author) {
     const blog_post = new Blog({
@@ -62,7 +59,7 @@ blogRouter.post("/", userExtractor, async (request, response) => {
     const new_post = await blog_post.save();
 
     creator.blogs = creator.blogs.concat(new_post._id);
-    await creator.save();
+    // await creator.save();
 
     console.log(blog_post);
     console.log("saved!");

@@ -8,7 +8,7 @@ const LoginForm = (props) => {
   const loginMain = (e) => {
     e.preventDefault();
 
-    login({ username, password });
+    login({ username, password }).catch(error => console.log("BAD"));
 
     //Reset the fields
     setUsername("");

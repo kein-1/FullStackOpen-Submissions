@@ -63,8 +63,8 @@ const App = () => {
     //The axios api defines .data as the response returned by the server
 
     //loginService is defined in the backend. It actually uses 2 parameters but we can omit 1 of them here since the other one is defined in the backend where this function is defined
-    try{
       const user = await loginService(object);
+      console.log("THIS DID NOT RUN")
       console.log(user)
       //Save the response from the server to the user state
       setUser(user);
@@ -86,15 +86,10 @@ const App = () => {
       //the userBlogs state is an empty state and it gets rendered here
 
       // window.localStorage.setItem("userBlogs", JSON.stringify(userBlogs));
-    }catch(error){
-      console.log(error.message)
-      console.log(error.response.data)
-      setErrorMessage(error.response.data);
-      setShowError(true);
+    
     }
       
-      
-  };
+  ;
 
   const logout = () => {
     window.localStorage.clear();
