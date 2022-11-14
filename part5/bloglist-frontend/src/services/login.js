@@ -7,7 +7,7 @@ import axios from "axios";
 //ENVIRONMENTAL VARIABLES AND IT WILL RUN SEPARATE URLS BASED ON WHETHER OUR CODE IS
 //IN PRODUCTION OR DEVELOPMENT!!! LOOK INTO THIS !!
 //I WAS RUNNING INTO ERRORS WHEN I HOSTED BY SITE WITHOUT DOING THIS!!!
-const loginUrl = "https://blog-backend-walv.onrender.com/api/login";
+const loginUrl = "https://blog-backend-rh02.onrender.com/api/login";
 
 const login = async (credentials) => {
   try {
