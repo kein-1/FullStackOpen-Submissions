@@ -14,8 +14,9 @@ const registrationRouter = require("./routes/registration");
 
 const errorHandler = require("./utils/errors");
 const tokenExtractor = require("./utils/tokenExtractor");
+const url = process.env.MONGODB_URL;
 
-mongoose.connect(process.env.MONGDB_URL, () => console.log("CONNECTED"));
+mongoose.connect(url, () => console.log("CONNECTED"));
 
 //Formats your content so it looks better
 app.set("json spaces", 2);
