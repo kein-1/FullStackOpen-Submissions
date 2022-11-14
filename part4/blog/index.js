@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -5,7 +7,6 @@ const mongoose = require("mongoose");
 
 //This is a npm library that eliminates the need to use try/catch. Any errors will be automatically passed to the error handling funciton we setup
 require("express-async-errors");
-const { PORT, MONGODB_URL } = require("./utils/config");
 const blogsRouter = require("./routes/blog");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
@@ -14,7 +15,7 @@ const registrationRouter = require("./routes/registration");
 const errorHandler = require("./utils/errors");
 const tokenExtractor = require("./utils/tokenExtractor");
 
-mongoose.connect(MONGODB_URL, () => console.log("CONNECTED"));
+mongoose.connect(process.env.MONGDB_URL, () => console.log("CONNECTED"));
 
 //Formats your content so it looks better
 app.set("json spaces", 2);
@@ -34,6 +35,7 @@ app.use("/api/registration", registrationRouter);
 //Since we have the 'require('express-async-errors')' defined above, all errors in async functions will automatically run to this middelware
 app.use(errorHandler);
 
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Running on ${PORT}`));
 
 module.exports = app;

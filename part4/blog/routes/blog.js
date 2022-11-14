@@ -35,12 +35,14 @@ blogRouter.post("/", userExtractor, async (request, response) => {
   //We passed the handling to a middleware function. The function added the "token" property to the request object
   //We also passed extracting the user into a middleware defined here. That middleware will add a "request.user" attribute to the request object before it reaches this route's logic
 
-  // JUST REALIZED MY CODE ISN'T ACTUALLY VERIFYING THE USER. MY MIDDLEWARE DOES IT BUT I NEED TO VERIFY IF IT WORKED HERE 
-  const token = request.token;
+  // JUST REALIZED MY CODE ISN'T ACTUALLY VERIFYING THE USER. MY MIDDLEWARE DOES IT BUT I NEED TO VERIFY IF IT WORKED HERE
   const user = request.user;
-  
+
   //User should have been extracted correctly in the userExtractor middleware which utilizes jwtverify
-  if (!user) return response.status(401).json({error: "invalid token or missing token"})
+  if (!user)
+    return response
+      .status(401)
+      .json({ error: "invalid token or missing token" });
 
   const creator = await User.findById(user);
   console.log(creator);
@@ -82,7 +84,7 @@ blogRouter.delete("/:id", userExtractor, async (request, response) => {
 
   //This is important. Need to check whether the blog's user id field
   // (since each blog has a unique user associated to it) matches with the user making the request
-  if (blogObj.user.toString() == request.user) {
+  if (blogObj.user.toString() === request.user) {
     //Delete the blog in our blog collections
     const deletion = await Blog.deleteOne(blogObj);
     console.log(deletion);
