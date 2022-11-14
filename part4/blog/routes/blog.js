@@ -16,7 +16,7 @@ Notice how with router we cut off the beginning portion
 
 blogRouter.get("/", async (request, response) => {
   let ans = await Blog.find({});
-  response.json(ans);
+  return response.json(ans);
 });
 
 blogRouter.get("/:id", async (request, response) => {
@@ -24,7 +24,7 @@ blogRouter.get("/:id", async (request, response) => {
 
   const id = request.params.id;
   let ans = await Blog.findById(id);
-  response.json(ans);
+  return response.json(ans);
 });
 
 //Get the token from client to server. This was extracted to a middleware called tokenExtractor.js. We are also passing in a route-specific middleware called userExtractor. This is loaded after the token extractor and it is used to figure out who the token belongs to
@@ -66,9 +66,9 @@ blogRouter.post("/", userExtractor, async (request, response) => {
     console.log(blog_post);
     console.log("saved!");
 
-    response.json(blog_post);
+    return response.json(blog_post);
   } else {
-    response.status(400).send("MISSING TITLE AND AUTHOR");
+    return response.status(400).send("MISSING TITLE AND AUTHOR");
   }
 });
 
