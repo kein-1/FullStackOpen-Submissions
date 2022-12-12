@@ -1,7 +1,10 @@
 # FullStack-Open
 Full Stack Open Course and Submissions
 
-The course focuses on modern web development technology stacks.
+The course focuses on modern web development technology stacks. 
+
+Note: I stopped the course around November to work on my E-commerce full-stack project. I am on part 6 of this course and would love to hop back on and complete it. 
+As of early December, I completed my full-stack project so I can hop back onto this soon 
 
 #### Part 1: Intro to React. Utilizes modern React Hooks. part1 assignment utilizes useState  
 
@@ -33,3 +36,5 @@ Built the frontend for our blog app. I decided to incorporate Tailwind CSS for t
 
 https://blog-mv4w.onrender.com/
 [Blog site](https://blog-mv4w.onrender.com/)
+
+
