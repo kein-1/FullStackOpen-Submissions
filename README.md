@@ -37,4 +37,4 @@ Built the frontend for our blog app. I decided to incorporate Tailwind CSS for t
 https://blog-mv4w.onrender.com/
 [Blog site](https://blog-mv4w.onrender.com/)
 
-
+### Part 7: Graph QL
